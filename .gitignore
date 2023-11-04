@@ -1,0 +1,6 @@
+local_dev/
+.env
+src/db.sqlite3
+
+# Maven
+target/
