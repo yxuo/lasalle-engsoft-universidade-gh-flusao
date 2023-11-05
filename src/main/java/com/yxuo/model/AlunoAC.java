@@ -1,17 +1,23 @@
 package com.yxuo.model;
 
-public class AlunoAC extends BaseEntity{
-    private int idAluno;
+public class AlunoAC extends BaseEntity {
+    private Integer idAluno;
     private String mat;
     private String nome;
 
-    @Override
-    public int getId() {
-        return getIdAluno();
-    }
-    
+    private static final String TABLE_NAME = "AlunoAC";
+    private static final String ID_ALUNO_COLUMN = "idAluno";
+    private static final String MAT_COLUMN = "mat";
+    private static final String NOME_COLUMN = "nome";
+
     public AlunoAC() {
         this.idAluno = -1;
+        this.mat = "";
+        this.nome = "";
+    }
+
+    public AlunoAC(int idAluno) {
+        this.idAluno = idAluno;
         this.mat = "";
         this.nome = "";
     }
@@ -22,13 +28,34 @@ public class AlunoAC extends BaseEntity{
         this.nome = nome;
     }
 
-    public AlunoAC(int idAluno) {
-        this.idAluno = idAluno;
-        this.mat = "";
-        this.nome = "";
+    // Names
+
+    @Override
+    public String getTableName() {
+        return handleNamingStrategy(TABLE_NAME);
     }
 
-    public int getIdAluno() {
+    @Override
+    public String getIdColumn() {
+        return handleNamingStrategy(ID_ALUNO_COLUMN);
+    }
+
+    public final String getMatColumn() {
+        return handleNamingStrategy(MAT_COLUMN);
+    }
+
+    public final String getNomeColumn() {
+        return handleNamingStrategy(NOME_COLUMN);
+    }
+
+    // Fields
+
+    @Override
+    public int getId() {
+        return getIdAluno();
+    }
+
+    public Integer getIdAluno() {
         return idAluno;
     }
 
@@ -45,7 +72,6 @@ public class AlunoAC extends BaseEntity{
         this.mat = mat;
     }
 
-    // Métodos get e set para o campo &#39;nome&#39;
     public String getNome() {
         return nome;
     }
@@ -56,7 +82,7 @@ public class AlunoAC extends BaseEntity{
 
     @Override
     public String toString() {
-        return "AlunoAC{" +
+        return getClass().getCanonicalName() + "{" +
                 "idAluno=" + idAluno +
                 ", mat='" + mat + '\'' +
                 ", nome='" + nome + '\'' +

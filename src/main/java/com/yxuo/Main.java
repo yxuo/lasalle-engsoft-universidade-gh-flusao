@@ -10,11 +10,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.yxuo.util.Config;
 import com.yxuo.util.DBConnector;
 
 import java.awt.GridLayout;
 
 public class Main {
+
+    public static final Config config = Config.getInstance();
 
     public static void testConnection() throws SQLException {
         try {

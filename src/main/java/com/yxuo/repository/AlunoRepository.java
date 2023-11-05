@@ -1,8 +1,5 @@
 package com.yxuo.repository;
 
-import com.yxuo.model.AlunoAC;
-import com.yxuo.util.DBConnector;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,46 +7,47 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yxuo.model.AlunoAC;
+import com.yxuo.model.BaseEntity;
+import com.yxuo.util.DBConnector;
+
 public class AlunoRepository extends BaseRepository {
-    private Connection connection;
-    private final String TABLE_NAME = "Aluno";
-    private final String COLUMN_ID = "idAluno";
-    private final String COLUMN_MAT = "mat";
-    private final String COLUMN_NOME = "nome";
 
     public AlunoRepository() throws SQLException {
         this.connection = DBConnector.getConnection();
+        this.aluno = new AlunoAC();
     }
 
     public AlunoRepository(Connection con) throws SQLException {
         this.connection = con;
+        this.aluno = new AlunoAC();
     }
 
-    @Override
-    public String getCOLUMN_ID() {
-        return COLUMN_ID;
-    }
+    private Connection connection;
+    private AlunoAC aluno;
 
     @Override
-    public String getTABLE_NAME() {
-        return TABLE_NAME;
+    public <T extends BaseEntity> T getEntity() {
+        @SuppressWarnings("unchecked")
+        T entity = (T) this.aluno;
+        return entity;
     }
 
     @Override
     public Connection getConnection() {
-        return connection;
+        return this.connection;
     }
 
     private AlunoAC construirObjeto(ResultSet resultado) throws SQLException {
-        int idAluno = resultado.getInt(COLUMN_ID);
-        String mat = resultado.getString(COLUMN_MAT);
-        String nome = resultado.getString(COLUMN_NOME);
+        int idAluno = resultado.getInt(aluno.getIdColumn());
+        String mat = resultado.getString(aluno.getMatColumn());
+        String nome = resultado.getString(aluno.getNomeColumn());
         return new AlunoAC(idAluno, mat, nome);
     }
 
     public List<AlunoAC> listarTodos() throws SQLException {
         List<AlunoAC> alunos = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_NAME;
+        String query = "SELECT * FROM " + aluno.getTableName();
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -63,18 +61,22 @@ public class AlunoRepository extends BaseRepository {
     }
 
     public void inserir(AlunoAC aluno) throws SQLException {
-        String query = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_MAT + ", " + COLUMN_NOME + ") VALUES (?, ?)";
+        String query = "INSERT INTO " + aluno.getTableName() + " (" + aluno.getIdColumn() + ", "
+                + aluno.getMatColumn() + ", " + aluno.getNomeColumn() + ") VALUES (?, ?, ?)";
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, aluno.getMat());
-            statement.setString(2, aluno.getNome());
+            statement.setInt(1, aluno.getId());
+            statement.setString(2, aluno.getMat());
+            statement.setString(3, aluno.getNome());
             statement.executeUpdate();
         }
     }
 
     public void atualizar(AlunoAC aluno) throws SQLException {
-        String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_MAT + " = ?, " + COLUMN_NOME + " = ? WHERE "
-                + COLUMN_ID + " = ?";
+        String query = "UPDATE " + aluno.getTableName() + " SET " + aluno.getMatColumn() + " = ?, "
+                + aluno.getNomeColumn()
+                + " = ? WHERE "
+                + aluno.getIdColumn() + " = ?";
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, aluno.getMat());
@@ -85,7 +87,7 @@ public class AlunoRepository extends BaseRepository {
     }
 
     public AlunoAC buscarPorId(int id) throws SQLException {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?";
+        String query = "SELECT * FROM " + aluno.getTableName() + " WHERE " + aluno.getIdColumn() + " = ?";
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
@@ -99,10 +101,10 @@ public class AlunoRepository extends BaseRepository {
     }
 
     public void criarTabela() throws SQLException {
-        String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                COLUMN_ID + " INT AUTO_INCREMENT PRIMARY KEY, " +
-                COLUMN_NOME + " VARCHAR(255), " +
-                COLUMN_MAT + " VARCHAR(255) " +
+        String query = "CREATE TABLE IF NOT EXISTS " + aluno.getTableName() + " (" +
+                aluno.getIdColumn() + " INT AUTO_INCREMENT PRIMARY KEY, " +
+                aluno.getNomeColumn() + " VARCHAR(255), " +
+                aluno.getMatColumn() + " VARCHAR(255) " +
                 ")";
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {

@@ -6,16 +6,24 @@ public class ProvaAC extends BaseEntity {
     private String situacao;
     private TurmaAC turma;
 
-    @Override
-    public int getId() {
-        return getIdProva();
-    }
+    private static final String TABLE_NAME = "ProvaAC";
+    private static final String ID_PROVA_COLUMN = "idProva";
+    private static final String COD_PROVA_COLUMN = "codProva";
+    private static final String SITUACAO_COLUMN = "situacao";
+    private static final String TURMA_COLUMN = "turma";
 
     public ProvaAC() {
         idProva = -1;
         codProva = "";
         situacao = "";
         turma = new TurmaAC();
+    }
+
+    public ProvaAC(int idProva) {
+        this.idProva = idProva;
+        this.codProva = "";
+        this.situacao = "";
+        this.turma = new TurmaAC();
     }
 
     public ProvaAC(int idProva, String codProva, String situacao, TurmaAC turma) {
@@ -25,11 +33,35 @@ public class ProvaAC extends BaseEntity {
         this.turma = turma;
     }
 
-    public ProvaAC(int idProva) {
-        this.idProva = idProva;
-        this.codProva = "";
-        this.situacao = "";
-        this.turma = new TurmaAC();
+    // Names
+
+    @Override
+    public String getTableName() {
+        return handleNamingStrategy(TABLE_NAME);
+    }
+
+    @Override
+    public String getIdColumn() {
+        return handleNamingStrategy(ID_PROVA_COLUMN);
+    }
+
+    public String getCodProvaColumn() {
+        return handleNamingStrategy(COD_PROVA_COLUMN);
+    }
+
+    public String getSituacaoColumn() {
+        return handleNamingStrategy(SITUACAO_COLUMN);
+    }
+
+    public String getTurmaColumn() {
+        return handleNamingStrategy(TURMA_COLUMN);
+    }
+
+    // Fields
+
+    @Override
+    public int getId() {
+        return getIdProva();
     }
 
     public int getIdProva() {

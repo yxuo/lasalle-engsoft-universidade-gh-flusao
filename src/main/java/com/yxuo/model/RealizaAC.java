@@ -6,11 +6,12 @@ public class RealizaAC extends BaseEntity {
     private MatriculadoAC matriculado;
     private ProvaAC prova;
 
-    @Override
-    public int getId() {
-        return getIdRealiza();
-    }
-    
+    private static final String TABLE_NAME = "RealizaAC";
+    private static final String ID_REALIZA_COLUMN = "idRealiza";
+    private static final String NOTA_COLUMN = "nota";
+    private static final String MATIRCULADO_COLUMN = "matriculado";
+    private static final String PROVA_COLUMN = "prova";
+
     public RealizaAC() {
         idRealiza = -1;
         nota = 0;
@@ -18,11 +19,11 @@ public class RealizaAC extends BaseEntity {
         prova = new ProvaAC();
     }
 
-    public RealizaAC(int idRealiza, double nota, MatriculadoAC matriculado, ProvaAC prova) {
+    public RealizaAC(int idRealiza) {
         this.idRealiza = idRealiza;
-        this.nota = nota;
-        this.matriculado = matriculado;
-        this.prova = prova;
+        this.nota = 0;
+        this.matriculado = new MatriculadoAC();
+        this.prova = new ProvaAC();
     }
 
     public RealizaAC(int idRealiza, double nota, int idMatriculado, int idProva) {
@@ -32,11 +33,42 @@ public class RealizaAC extends BaseEntity {
         this.prova = new ProvaAC(idProva);
     }
 
-    public RealizaAC(int idRealiza) {
+    public RealizaAC(int idRealiza, double nota, MatriculadoAC matriculado, ProvaAC prova) {
         this.idRealiza = idRealiza;
-        this.nota = 0;
-        this.matriculado = new MatriculadoAC();
-        this.prova = new ProvaAC();
+        this.nota = nota;
+        this.matriculado = matriculado;
+        this.prova = prova;
+    }
+
+    // Names
+
+    @Override
+    public String getTableName() {
+        return handleNamingStrategy(TABLE_NAME);
+    }
+
+    @Override
+    public String getIdColumn() {
+        return handleNamingStrategy(ID_REALIZA_COLUMN);
+    }
+
+    public String getNotaColumn() {
+        return handleNamingStrategy(NOTA_COLUMN);
+    }
+
+    public String getMatriculadoColumn() {
+        return handleNamingStrategy(MATIRCULADO_COLUMN);
+    }
+
+    public String getProvaColumn() {
+        return handleNamingStrategy(PROVA_COLUMN);
+    }
+
+    // Fields
+
+    @Override
+    public int getId() {
+        return getIdRealiza();
     }
 
     public int getIdRealiza() {
@@ -47,7 +79,7 @@ public class RealizaAC extends BaseEntity {
         this.idRealiza = idRealiza;
     }
 
-    public double getNota() {
+    public Double getNota() {
         return nota;
     }
 

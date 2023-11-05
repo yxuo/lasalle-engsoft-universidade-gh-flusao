@@ -16,7 +16,7 @@
 Instalar as dependências:
 
 ```
-mvn install
+mvn compile
 ```
 
 Criar o banco de dados e aplicar as migrações:
@@ -31,6 +31,6 @@ Rodar o programa
 mvn exec:java@main
 ```
 
-## Dependency Management
+## TDEs
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+- [TDE6](/docs/TDE6.md)

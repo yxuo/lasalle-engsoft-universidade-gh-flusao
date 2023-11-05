@@ -7,55 +7,52 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yxuo.model.BaseEntity;
 import com.yxuo.model.ProvaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.util.DBConnector;
 
 public class ProvaRepository extends BaseRepository {
+
+    public ProvaRepository() throws SQLException {
+        this.connection = DBConnector.getConnection();
+        this.turmaRepository = new TurmaRepository();
+        this.prova = new ProvaAC();
+    }
+
+    public ProvaRepository(Connection con) throws SQLException {
+        this.connection = con;
+        this.turmaRepository = new TurmaRepository(con);
+        this.prova = new ProvaAC();
+    }
+
     private Connection connection;
-    private final String TABLE_NAME = "Prova";
-    private final String COLUMN_ID = "idProva";
-    private final String COLUMN_COD_PROVA = "codProva";
-    private final String COLUMN_SITUACAO = "situacao";
-    private final String COLUMN_TURMA_ID = "turma";
     private final TurmaRepository turmaRepository;
-
-    @Override
-    public String getCOLUMN_ID() {
-        return COLUMN_ID;
-    }
-
-    @Override
-    public String getTABLE_NAME() {
-        return TABLE_NAME;
-    }
+    private final ProvaAC prova;
 
     @Override
     public Connection getConnection() {
         return connection;
     }
 
-    public ProvaRepository() throws SQLException {
-        this.connection = DBConnector.getConnection();
-        this.turmaRepository = new TurmaRepository();
-    }
-
-    public ProvaRepository(Connection con) throws SQLException {
-        this.connection = con;
-        this.turmaRepository = new TurmaRepository(con);
+    @Override
+    public <T extends BaseEntity> T getEntity() {
+        @SuppressWarnings("unchecked")
+        T entity = (T) this.prova;
+        return entity;
     }
 
     private ProvaAC construirObjeto(ResultSet resultado) throws SQLException {
-        int idProva = resultado.getInt(COLUMN_ID);
-        String codProva = resultado.getString(COLUMN_COD_PROVA);
-        String situacao = resultado.getString(COLUMN_SITUACAO);
-        TurmaAC turma = turmaRepository.buscarPorId(resultado.getInt(COLUMN_TURMA_ID));
+        int idProva = resultado.getInt(prova.getIdColumn());
+        String codProva = resultado.getString(prova.getCodProvaColumn());
+        String situacao = resultado.getString(prova.getSituacaoColumn());
+        TurmaAC turma = turmaRepository.buscarPorId(resultado.getInt(prova.getTurmaColumn()));
         return new ProvaAC(idProva, codProva, situacao, turma);
     }
 
     public List<ProvaAC> listarTodos() throws SQLException {
         List<ProvaAC> provas = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_NAME;
+        String query = "SELECT * FROM " + prova.getTableName();
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -69,20 +66,22 @@ public class ProvaRepository extends BaseRepository {
     }
 
     public void inserir(ProvaAC prova) throws SQLException {
-        String query = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_COD_PROVA + ", " + COLUMN_SITUACAO
-                + ", " + COLUMN_TURMA_ID + ") VALUES (?, ?, ?)";
+        String query = "INSERT INTO " + prova.getTableName() + " (" + prova.getIdColumn() + ", " + prova.getCodProvaColumn() + ", "
+                + prova.getSituacaoColumn()
+                + ", " + prova.getTurmaColumn() + ") VALUES (?, ?, ?, ?)";
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, prova.getCodProva());
-            statement.setString(2, prova.getSituacao());
-            statement.setInt(3, prova.getTurma().getIdTurma());
+            statement.setInt(1, prova.getId());
+            statement.setString(2, prova.getCodProva());
+            statement.setString(3, prova.getSituacao());
+            statement.setInt(4, prova.getTurma().getIdTurma());
             statement.executeUpdate();
         }
     }
 
     public void atualizar(ProvaAC prova) throws SQLException {
-        String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_COD_PROVA + " = ?, " + COLUMN_SITUACAO
-                + " = ?, " + COLUMN_TURMA_ID + " = ? WHERE " + COLUMN_ID + " = ?";
+        String query = "UPDATE " + prova.getTableName() + " SET " + prova.getCodProvaColumn() + " = ?, " + prova.getSituacaoColumn()
+                + " = ?, " + prova.getTurmaColumn() + " = ? WHERE " + prova.getIdColumn() + " = ?";
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, prova.getCodProva());
@@ -94,7 +93,7 @@ public class ProvaRepository extends BaseRepository {
     }
 
     public ProvaAC buscarPorId(int id) throws SQLException {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?";
+        String query = "SELECT * FROM " + prova.getTableName() + " WHERE " + prova.getIdColumn() + " = ?";
         DBConnector.parseQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
@@ -108,15 +107,15 @@ public class ProvaRepository extends BaseRepository {
     }
 
     public void criarTabela() throws SQLException {
-        String turmaTable = turmaRepository.getTABLE_NAME();
-        String turmaId = turmaRepository.getCOLUMN_ID();
+        TurmaAC t = prova.getTurma();
 
-        String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                COLUMN_ID + " INT AUTO_INCREMENT PRIMARY KEY, " +
-                COLUMN_COD_PROVA + " VARCHAR(255), " +
-                COLUMN_SITUACAO + " VARCHAR(255), " +
-                COLUMN_TURMA_ID + " INT, " +
-                "FOREIGN KEY (" + COLUMN_TURMA_ID + ") REFERENCES " + turmaTable + "(" + turmaId + ") ON DELETE CASCADE"
+        String query = "CREATE TABLE IF NOT EXISTS " + prova.getTableName() + " (" +
+                prova.getIdColumn() + " INT AUTO_INCREMENT PRIMARY KEY, " +
+                prova.getCodProvaColumn() + " VARCHAR(255), " +
+                prova.getSituacaoColumn() + " VARCHAR(255), " +
+                prova.getTurmaColumn() + " INT, " +
+                "FOREIGN KEY (" + prova.getTurmaColumn() + ") REFERENCES " + t.getTableName() + "(" + t.getIdColumn()
+                + ") ON DELETE CASCADE"
                 +
                 ")";
         DBConnector.parseQuery(query);

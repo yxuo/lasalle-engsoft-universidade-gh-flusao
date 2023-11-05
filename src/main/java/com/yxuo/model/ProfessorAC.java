@@ -5,15 +5,21 @@ public class ProfessorAC extends BaseEntity {
     private String matProf;
     private String nome;
 
-    @Override
-    public int getId() {
-        return getIdProf();
-    }
+    private static final String TABLE_NAME = "ProfessorAC";
+    private static final String ID_PROF_COLUMN = "idProf";
+    private static final String MAT_PROF_COLUMN = "matProf";
+    private static final String NOME_COLUMN = "nome";
 
     public ProfessorAC() {
         idProf = -1;
         matProf = "";
         nome = "";
+    }
+
+    public ProfessorAC(int idProf) {
+        this.idProf = idProf;
+        this.matProf = "";
+        this.nome = "";
     }
 
     public ProfessorAC(int idProf, String matProf, String nome) {
@@ -22,10 +28,31 @@ public class ProfessorAC extends BaseEntity {
         this.nome = nome;
     }
 
-    public ProfessorAC(int idProf) {
-        this.idProf = idProf;
-        this.matProf = "";
-        this.nome = "";
+    // Names
+
+    @Override
+    public String getTableName() {
+        return handleNamingStrategy(TABLE_NAME);
+    }
+
+    @Override
+    public String getIdColumn() {
+        return handleNamingStrategy(ID_PROF_COLUMN);
+    }
+
+    public String getMatProfColumn() {
+        return handleNamingStrategy(MAT_PROF_COLUMN);
+    }
+
+    public String getNomeColumn() {
+        return handleNamingStrategy(NOME_COLUMN);
+    }
+
+    // Fields
+
+    @Override
+    public int getId() {
+        return getIdProf();
     }
 
     public int getIdProf() {

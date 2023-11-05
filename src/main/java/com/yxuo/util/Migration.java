@@ -216,13 +216,15 @@ public class Migration {
         System.out.println("Cmd: " + cmd);
 
         Migration migration = new Migration();
+
         if (cmd.equals("run")) {
             System.out.println("Apagando tabelas...\n");
             migration.apagarTabelas();
-            System.out.println("Criando tabelas...\n");
+            System.out.println("\nCriando tabelas...\n");
             migration.criarTabelas();
             System.out.println("\nAplicando migrações...\n");
             migration.migrar();
+
         } else if (cmd.equals("clean")) {
             System.out.println("Apagando tabelas...");
             migration.apagarTabelas();
