@@ -10,7 +10,7 @@ import com.yxuo.util.DBConnector;
 
 public abstract class BaseRepository {
 
-    BaseRepository() {
+    protected BaseRepository() {
         // this.e
     }
 
@@ -22,18 +22,21 @@ public abstract class BaseRepository {
 
     /**
      * Example:
+     * 
      * <pre>
      * class UserRepository {
      *     private UserEntity entity;
      *     public <T extends BaseEntity> T getEntity() {
-     *         @SuppressWarnings(&#40;"unchecked")
+     *         &#64;SuppressWarnings(&#40;"unchecked")
      *         T entity = (T) this.entity;
      *         return entity;
      *     }
      * }
      * </pre>
      */
-    public abstract <T extends BaseEntity> T getEntity();
+    public <T extends BaseEntity> T getEntity() {
+        return null;
+    };
 
     public abstract Connection getConnection();
 

@@ -67,7 +67,7 @@ public class RealizaAC extends BaseEntity {
     // Fields
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return getIdRealiza();
     }
 

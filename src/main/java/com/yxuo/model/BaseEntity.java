@@ -10,7 +10,7 @@ public abstract class BaseEntity {
         this.entityUtil = EntityUtil.getInstance();
     }
 
-    public abstract int getId();
+    public abstract Integer getId();
 
     public abstract String getIdColumn();
 

@@ -1,13 +1,13 @@
 package com.yxuo.model;
 
 public class TurmaAC extends BaseEntity {
-    private int idTurma;
-    private String turno;
-    private String dia;
-    private String horaInicio;
-    private String horaFim;
-    private DisciplinaAC disciplina;
-    private ProfessorAC professor;
+    private int idTurma = -1;
+    private String turno = "";
+    private String dia = "";
+    private String horaInicio = "";
+    private String horaFim = "";
+    private DisciplinaAC disciplina = new DisciplinaAC();
+    private ProfessorAC professor = new ProfessorAC();
 
     private static final String TABLE_NAME = "TurmaAC";
     private static final String ID_TURMA_COLUMN = "idTurma";
@@ -19,33 +19,32 @@ public class TurmaAC extends BaseEntity {
     private static final String PROFESSOR_COLUMN = "professor";
 
     public TurmaAC() {
-        this.idTurma = -1;
-        this.turno = "";
-        this.dia = "";
-        this.horaInicio = "";
-        this.horaFim = "";
-        this.disciplina = new DisciplinaAC();
-        this.professor = new ProfessorAC();
     }
 
     public TurmaAC(int idTurma) {
         this.idTurma = idTurma;
-        this.turno = "";
-        this.dia = "";
-        this.horaInicio = "";
-        this.horaFim = "";
-        this.disciplina = new DisciplinaAC();
-        this.professor = new ProfessorAC();
     }
 
     public TurmaAC(int idTurma, int idDis, int idProfessor) {
         this.idTurma = idTurma;
-        this.turno = "";
-        this.dia = "";
-        this.horaInicio = "";
-        this.horaFim = "";
         this.disciplina = new DisciplinaAC(idDis);
         this.professor = new ProfessorAC(idProfessor);
+    }
+
+    public TurmaAC(int idTurma, DisciplinaAC disciplina, ProfessorAC professor) {
+        this.idTurma = idTurma;
+        this.disciplina = disciplina;
+        this.professor = professor;
+    }
+
+    public TurmaAC(int idTurma, String turno, String dia, String horaInicio, String horaFim) {
+        this.idTurma = idTurma;
+        this.turno = turno;
+        this.dia = dia;
+        this.horaInicio = horaInicio;
+        this.horaFim = horaFim;
+        this.disciplina = new DisciplinaAC();
+        this.professor = new ProfessorAC();
     }
 
     public TurmaAC(int idTurma, String turno, String dia, String horaInicio, String horaFim,
@@ -98,11 +97,11 @@ public class TurmaAC extends BaseEntity {
     // Fields
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return getIdTurma();
     }
 
-    public int getIdTurma() {
+    public Integer getIdTurma() {
         return idTurma;
     }
 

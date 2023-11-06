@@ -1,7 +1,7 @@
 package com.yxuo.model;
 
 public class AlunoAC extends BaseEntity {
-    private Integer idAluno;
+    private int idAluno;
     private String mat;
     private String nome;
 
@@ -51,7 +51,7 @@ public class AlunoAC extends BaseEntity {
     // Fields
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return getIdAluno();
     }
 

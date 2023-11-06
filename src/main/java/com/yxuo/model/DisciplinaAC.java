@@ -1,7 +1,7 @@
 package com.yxuo.model;
 
 public class DisciplinaAC extends BaseEntity {
-    private int idDis;
+    private Integer idDis;
     private String codDis;
     private String nome;
 
@@ -51,7 +51,7 @@ public class DisciplinaAC extends BaseEntity {
     // Fields
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return getIdDis();
     }
 

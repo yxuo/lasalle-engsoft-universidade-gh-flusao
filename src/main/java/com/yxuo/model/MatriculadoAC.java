@@ -51,7 +51,7 @@ public class MatriculadoAC extends BaseEntity {
     // Fields
     
         @Override
-        public int getId() {
+        public Integer getId() {
             return getIdMatriculado();
         }
 

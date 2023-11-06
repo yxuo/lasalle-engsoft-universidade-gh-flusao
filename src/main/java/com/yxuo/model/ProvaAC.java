@@ -60,7 +60,7 @@ public class ProvaAC extends BaseEntity {
     // Fields
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return getIdProva();
     }
 
