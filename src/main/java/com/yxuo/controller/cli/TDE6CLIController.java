@@ -1,26 +1,33 @@
 package com.yxuo.controller.cli;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.yxuo.constants.TableCte;
+import com.yxuo.constant.TableCte;
 import com.yxuo.model.AlunoAC;
 import com.yxuo.model.DisciplinaAC;
 import com.yxuo.model.MatriculadoAC;
 import com.yxuo.model.ProfessorAC;
+import com.yxuo.model.ProvaAC;
+import com.yxuo.model.RealizaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.repository.TDE6.TDE6Repository;
+import com.yxuo.repository.TDE6.transfer.Tde6Q5Obj;
+import com.yxuo.repository.TDE6.transfer.Tde6Q6Obj;
 import com.yxuo.util.CLI;
 
 public class TDE6CLIController {
 
-    private TDE6Repository tde6Repository;
-    private TurmaAC turma = new TurmaAC();
-    private DisciplinaAC disciplina = turma.getDisciplina();
-    private ProfessorAC professor = turma.getProfessor();
-    private AlunoAC aluno = new AlunoAC();
+    private final TDE6Repository tde6Repository;
+    private final TurmaAC turma = new TurmaAC();
+    private final DisciplinaAC disciplina = turma.getDisciplina();
+    private final ProfessorAC professor = turma.getProfessor();
+    private final AlunoAC aluno = new AlunoAC();
+    private final RealizaAC realiza = new RealizaAC();
+    private final ProvaAC prova = new ProvaAC();
 
     public TDE6CLIController() throws SQLException {
         tde6Repository = new TDE6Repository();
@@ -255,4 +262,197 @@ public class TDE6CLIController {
     }
 
     // #endregion Q3
+
+    // #region Q4
+
+    /**
+     * Query: {@code Disciplina <--- Turma <--- Prova <--- REALIZA}
+     * 
+     * @return {turma.id, disc.nome, prova{codigo, situacao}, notas }
+     * 
+     * @throws SQLException
+     */
+    public String getQ4String() throws SQLException {
+        String response = "";
+        List<RealizaAC> q4 = tde6Repository.getQ4();
+        List<String> headers = getQ4Header(q4);
+        List<Integer> maxLength = getQ4MaxLength(q4, headers);
+        response += CLI.getTableString(headers, maxLength);
+        response += getQ4Body(q4, maxLength);
+        return response;
+    }
+
+    private List<String> getQ4Header(List<RealizaAC> q3) {
+        return Arrays.asList(
+                TableCte.LINHA,
+                turma.getIdColumn(),
+                disciplina.getNomeColumn(),
+                prova.getCodProvaColumn(),
+                prova.getSituacaoColumn(),
+                realiza.getNotaColumn());
+    }
+
+    private <T> List<Serializable> getQ4BodyItem(T firstItem, RealizaAC realiza) {
+        return Arrays.asList(
+                firstItem.toString(),
+                realiza.getProva().getTurma().getId(),
+                realiza.getProva().getTurma().getDisciplina().getNome(),
+                realiza.getProva().getCodProva(),
+                realiza.getProva().getSituacao(),
+                realiza.getNota());
+    }
+
+    private String getQ4Body(List<RealizaAC> items, List<Integer> maxLength) throws SQLException {
+        String response = "";
+        Integer count = 1;
+        for (RealizaAC realiza : items) {
+            response += CLI.getTableString(getQ4BodyItem(count, realiza), maxLength);
+            count++;
+        }
+        return response;
+    }
+
+    private List<Integer> getQ4MaxLength(List<RealizaAC> items, List<String> headers) {
+        List<Integer> maxLength = new ArrayList<>();
+        // Header
+        maxLength = CLI.getMaxLength(headers, maxLength);
+        // Body
+        for (RealizaAC realiza : items) {
+            maxLength = CLI.getMaxLength(getQ4BodyItem("", realiza), maxLength);
+        }
+        return maxLength;
+    }
+
+    // #endregion Q4
+
+    // #region Q5
+
+    /**
+     * Query: {@code Disciplina <--- Turma <--- Prova <--- REALIZA}
+     * 
+     * @return {turma.id, disc.nome, prova{codigo, situacao}, notas }
+     * 
+     * @throws SQLException
+     */
+    public String getQ5String() throws SQLException {
+        String response = "";
+        List<Tde6Q5Obj> items = tde6Repository.getQ5();
+        List<String> headers = getQ5Header();
+        List<Integer> maxLength = getQ5MaxLength(items, headers);
+        response += CLI.getTableString(headers, maxLength);
+        response += getQ5Body(items, maxLength);
+        return response;
+    }
+
+    private List<String> getQ5Header() {
+        return Arrays.asList(
+                TableCte.LINHA,
+                professor.getMatProfColumn(),
+                professor.getNomeColumn() + " prof.",
+                turma.getIdColumn(),
+                disciplina.getNomeColumn() + " disc.",
+                prova.getCodProvaColumn(),
+                prova.getSituacaoColumn(),
+                "MEDIA " + realiza.getNotaColumn(),
+                "MAX " + realiza.getNotaColumn(),
+                "MIN " + realiza.getNotaColumn());
+    }
+
+    private <T> List<Serializable> getQ5BodyItem(T firstItem, Tde6Q5Obj obj) {
+        ProvaAC prova = obj.getRealiza().getProva();
+        TurmaAC turma = prova.getTurma();
+        ProfessorAC professor = turma.getProfessor();
+        DisciplinaAC disciplina = turma.getDisciplina();
+        return Arrays.asList(
+                firstItem.toString(),
+                professor.getMatProf(),
+                professor.getNome(),
+                turma.getId(),
+                disciplina.getNome(),
+                prova.getCodProva(),
+                prova.getSituacao(),
+                obj.getRealizaNotaAvg(),
+                obj.getRealizaNotaMax(),
+                obj.getRealizaNotaMin());
+    }
+
+    private String getQ5Body(List<Tde6Q5Obj> items, List<Integer> maxLength) throws SQLException {
+        String response = "";
+        Integer count = 1;
+        for (Tde6Q5Obj obj : items) {
+            response += CLI.getTableString(getQ5BodyItem(count, obj), maxLength);
+            count++;
+        }
+        return response;
+    }
+
+    private List<Integer> getQ5MaxLength(List<Tde6Q5Obj> items, List<String> headers) {
+        List<Integer> maxLength = new ArrayList<>();
+        // Header
+        maxLength = CLI.getMaxLength(headers, maxLength);
+        // Body
+        for (Tde6Q5Obj obj : items) {
+            maxLength = CLI.getMaxLength(getQ5BodyItem("", obj), maxLength);
+        }
+        return maxLength;
+    }
+
+    // #endregion Q5
+
+    // #region Q6
+
+    /**
+     * Query: {@code Professor <--- TURMA }
+     * 
+     * @return { prof.nome, COUNT(prof.id) }
+     * 
+     * @throws SQLException
+     */
+    public String getQ6String() throws SQLException {
+        String response = "";
+        List<Tde6Q6Obj> items = tde6Repository.getQ6();
+        List<String> headers = getQ6Header();
+        List<Integer> maxLength = getQ6MaxLength(items, headers);
+        response += CLI.getTableString(headers, maxLength);
+        response += getQ6Body(items, maxLength);
+        return response;
+    }
+
+    private List<String> getQ6Header() {
+        return Arrays.asList(
+                TableCte.LINHA,
+                professor.getNomeColumn(),
+                "CONTAGEM " + professor.getIdColumn());
+    }
+
+    private <T> List<Serializable> getQ6BodyItem(T firstItem, Tde6Q6Obj obj) {
+        return Arrays.asList(
+                firstItem.toString(),
+                obj.getProfessor().getNome(),
+                obj.getProfessorCount());
+    }
+
+    private String getQ6Body(List<Tde6Q6Obj> items, List<Integer> maxLength) throws SQLException {
+        String response = "";
+        Integer count = 1;
+        for (Tde6Q6Obj obj : items) {
+            response += CLI.getTableString(getQ6BodyItem(count, obj), maxLength);
+            count++;
+        }
+        return response;
+    }
+
+    private List<Integer> getQ6MaxLength(List<Tde6Q6Obj> items, List<String> headers) {
+        List<Integer> maxLength = new ArrayList<>();
+        // Header
+        maxLength = CLI.getMaxLength(headers, maxLength);
+        // Body
+        for (Tde6Q6Obj obj : items) {
+            maxLength = CLI.getMaxLength(getQ6BodyItem("", obj), maxLength);
+        }
+        return maxLength;
+    }
+
+    // #endregion Q6
+
 }

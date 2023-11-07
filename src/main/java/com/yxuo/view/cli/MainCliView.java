@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import com.yxuo.constants.MessageCte;
+import com.yxuo.constant.MessageCte;
 import com.yxuo.util.CLI;
 import com.yxuo.view.cli.enums.MainCliMenuEnum;
 
@@ -28,7 +28,7 @@ public class MainCliView {
                 } else {
                     clearCli();
                     clearCli();
-                    System.out.println(CLI.error(MessageCte.OPCAO_INVALIDA) + "\n");
+                    System.out.println(CLI.getError(MessageCte.OPCAO_INVALIDA) + "\n");
                 }
             }
         } catch (NoSuchElementException ex) {

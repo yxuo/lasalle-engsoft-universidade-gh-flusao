@@ -3,6 +3,7 @@ package com.yxuo.util;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.yxuo.model.AlunoAC;
@@ -106,6 +107,10 @@ public class Migration {
         List<ProvaAC> Provas = new ArrayList<>();
         Provas.add(new ProvaAC(1, "AV1", "APLICADA", EntityUtil.getFromList(1, Turmas)));
         Provas.add(new ProvaAC(2, "AV1", "APLICADA", EntityUtil.getFromList(2, Turmas)));
+        Provas.add(new ProvaAC(3, "AV1", "CORRIGIDA", EntityUtil.getFromList(3, Turmas)));
+        Provas.add(new ProvaAC(4, "AV1", "CORRIGIDA", EntityUtil.getFromList(4, Turmas)));
+        Provas.add(new ProvaAC(5, "AV1", "DISPONIVEL", EntityUtil.getFromList(5, Turmas)));
+        Provas.add(new ProvaAC(6, "AV2", "DISPONIVEL", EntityUtil.getFromList(1, Turmas)));
         for (ProvaAC prova : Provas) {
             provaRepository.inserir(prova);
         }
@@ -114,10 +119,42 @@ public class Migration {
 
     private List<RealizaAC> migrarRealiza(List<MatriculadoAC> Matriculados, List<ProvaAC> Provas) throws SQLException {
         List<RealizaAC> Realizas = new ArrayList<>();
-        Realizas.add(new RealizaAC(realizaRepository.obterProximoID(), 10, EntityUtil.getFromList(1, Matriculados), EntityUtil.getFromList(1, Provas)));
-        Realizas.add(new RealizaAC(realizaRepository.obterProximoID(), 1, EntityUtil.getFromList(24, Matriculados), EntityUtil.getFromList(1, Provas)));
-        Realizas.add(new RealizaAC(realizaRepository.obterProximoID(), 8, EntityUtil.getFromList(31, Matriculados), EntityUtil.getFromList(1, Provas)));
-        for (RealizaAC realiza : Realizas) {
+        List<List<Integer>> protoRealizas = Arrays.asList(
+                Arrays.asList(10, 1, 1),
+                Arrays.asList(1, 24, 1),
+                Arrays.asList(8, 31, 1),
+                Arrays.asList(9, 38, 1),
+                Arrays.asList(9, 45, 1),
+
+                Arrays.asList(10, 21, 2),
+                Arrays.asList(1, 25, 2),
+                Arrays.asList(8, 28, 2),
+                Arrays.asList(9, 32, 2),
+                Arrays.asList(9, 35, 2),
+                Arrays.asList(8, 39, 2),
+                Arrays.asList(9, 42, 2),
+                Arrays.asList(9, 46, 2),
+
+                Arrays.asList(10, 22, 3),
+                Arrays.asList(1, 26, 3),
+                Arrays.asList(8, 29, 3),
+                Arrays.asList(9, 33, 3),
+                Arrays.asList(9, 36, 3),
+                Arrays.asList(8, 40, 3),
+                Arrays.asList(9, 43, 3),
+                Arrays.asList(9, 47, 3),
+
+                Arrays.asList(10, 23, 4),
+                Arrays.asList(10, 30, 4),
+                Arrays.asList(6, 37, 4),
+                Arrays.asList(9, 44, 4));
+
+        for (List<Integer> protoRealiza : protoRealizas) {
+            RealizaAC realiza = new RealizaAC(
+                    realizaRepository.obterProximoID(),
+                    protoRealiza.get(0),
+                    protoRealiza.get(1),
+                    protoRealiza.get(2));
             realizaRepository.inserir(realiza);
         }
         return Realizas;

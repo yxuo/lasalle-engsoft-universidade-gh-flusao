@@ -1,6 +1,7 @@
 local_dev/
 .env
 src/db.sqlite3
+.vscode
 
 # Maven
 target/

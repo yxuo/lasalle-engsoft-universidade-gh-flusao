@@ -13,15 +13,31 @@ public class CLI {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_BRIGHT_BLACK = "\u001b[30;1m";
+    public static final String ANSI_ITALIC = "\033[3m";
     public static final String TABLE_SPACE = "   ";
+
+    public String value = "";
+
+    public String getValue() {
+        return this.value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public static void clear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    public static String error(String text) {
+    public static String getError(String text) {
         return ANSI_RED + text + ANSI_RESET;
+    }
+
+    public static String getItalic(String text) {
+        return ANSI_ITALIC + text + ANSI_RESET;
     }
 
     public static String getSpaces(Integer maxLength, Integer currentLength) {
@@ -57,5 +73,10 @@ public class CLI {
         }
         response += "\n";
         return response;
+    }
+
+    @Override
+    public String toString() {
+        return value + ANSI_RESET;
     }
 }

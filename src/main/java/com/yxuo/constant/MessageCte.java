@@ -1,4 +1,4 @@
-package com.yxuo.constants;
+package com.yxuo.constant;
 
 public final class MessageCte {
     public static final String OPCAO_INVALIDA = "OPÇÃO INVÁLIDA!";

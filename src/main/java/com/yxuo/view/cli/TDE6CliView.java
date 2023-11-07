@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import com.yxuo.constants.MessageCte;
+import com.yxuo.constant.MessageCte;
 import com.yxuo.controller.cli.TDE6CLIController;
 import com.yxuo.util.CLI;
 import com.yxuo.view.cli.enums.TDE6CliMenuEnum;
@@ -36,7 +36,7 @@ public class TDE6CliView {
                 } else {
                     clearCli();
                     clearCli();
-                    System.out.println(CLI.error(MessageCte.OPCAO_INVALIDA) + "\n");
+                    System.out.println(CLI.getError(MessageCte.OPCAO_INVALIDA) + "\n");
                 }
             }
         } catch (NoSuchElementException ex) {
@@ -66,6 +66,15 @@ public class TDE6CliView {
                 break;
             case QUESTÃO_3:
                 System.out.println("\n" + tde6cliController.getQ3String());
+                break;
+            case QUESTÃO_4:
+                System.out.println("\n" + tde6cliController.getQ4String());
+                break;
+            case QUESTÃO_5:
+                System.out.println("\n" + tde6cliController.getQ5String());
+                break;
+            case QUESTÃO_6:
+                System.out.println("\n" + tde6cliController.getQ6String());
                 break;
             case MENU:
                 exitView = true;
