@@ -50,18 +50,23 @@ public class MainCliView {
             clearCli();
         }
         switch (selectedOption) {
-            case TDE6:
+            case TDE_6:
                 TDE6CliView tde6 = new TDE6CliView();
                 tde6.display();
-                break;
-            case SAIR:
-                System.out.println("Saindo...");
-                System.exit(0);
                 break;
             case SOBRE:
                 System.out.println("-".repeat(20) + "\n");
                 System.out.println(MessageCte.SOBRE + "\n");
                 System.out.println("-".repeat(20) + "\n");
+                break;
+            case VER_BANCO_DE_DADOS:
+                System.out.println("-".repeat(20) + "\n");
+                System.out.println("Em construção...");
+                System.out.println("-".repeat(20) + "\n");
+                break;
+            case SAIR:
+                System.out.println("Saindo...");
+                System.exit(0);
                 break;
             default:
                 break;

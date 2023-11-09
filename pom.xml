@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
 
@@ -47,7 +47,7 @@
                 <executions>
                     <execution>
                         <id>migration-run</id>
-                        <phase>package</phase>
+                        <phase>none</phase>
                         <goals>
                             <goal>java</goal>
                         </goals>
@@ -67,7 +67,7 @@
                 <executions>
                     <execution>
                         <id>migration-clean</id>
-                        <phase>package</phase>
+                        <phase>none</phase>
                         <goals>
                             <goal>java</goal>
                         </goals>
@@ -87,7 +87,7 @@
                 <executions>
                     <execution>
                         <id>main</id>
-                        <phase>package</phase>
+                        <phase>none</phase>
                         <goals>
                             <goal>java</goal>
                         </goals>

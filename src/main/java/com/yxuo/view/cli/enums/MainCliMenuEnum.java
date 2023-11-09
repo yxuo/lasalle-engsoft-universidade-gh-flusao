@@ -1,8 +1,9 @@
 package com.yxuo.view.cli.enums;
 
 public enum MainCliMenuEnum {
-    TDE6("1"),
-    SOBRE("2"),
+    TDE_6("1"),
+    VER_BANCO_DE_DADOS("2"),
+    SOBRE("3"),
     SAIR("z");
 
     private String value;
@@ -27,7 +28,8 @@ public enum MainCliMenuEnum {
     public static String toString1() {
         String repr = "";
         for (MainCliMenuEnum enumValue : MainCliMenuEnum.values()) {
-            repr += enumValue.getValue() + ". " + enumValue.name() + "\n";
+            String enumName = enumValue.name();//.replace("_", " ");
+            repr += enumValue.getValue() + ". " + enumName + "\n";
         }
         return repr;
     }
