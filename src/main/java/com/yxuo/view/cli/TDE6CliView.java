@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import com.yxuo.constant.MessageCte;
-import com.yxuo.controller.cli.TDE6CLIController;
+import com.yxuo.controller.cli.TDE6.TDE6CLIController;
 import com.yxuo.util.CLI;
 import com.yxuo.view.cli.enums.TDE6CliMenuEnum;
 
@@ -75,6 +75,15 @@ public class TDE6CliView {
                 break;
             case QUESTÃO_6:
                 System.out.println("\n" + tde6cliController.getQ6String());
+                break;
+            case QUESTÃO_7:
+                System.out.println("\n" + tde6cliController.getQ7String());
+                break;
+            case QUESTÃO_8:
+                System.out.println("\n" + tde6cliController.getQ8String());
+                break;
+            case QUESTÃO_9:
+                System.out.println("\n" + tde6cliController.getQ9String());
                 break;
             case MENU:
                 exitView = true;

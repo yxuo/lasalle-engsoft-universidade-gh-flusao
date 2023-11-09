@@ -1,5 +1,7 @@
 package com.yxuo.model;
 
+import com.yxuo.constant.TableCte;
+
 public class ProvaAC extends BaseEntity {
     private int idProva;
     private String codProva;
@@ -73,7 +75,15 @@ public class ProvaAC extends BaseEntity {
     }
 
     public String getCodProva() {
-        return codProva;
+        return getCodProva(true);
+    }
+
+    public String getCodProva(Boolean formatNull) {
+        if (codProva == null && formatNull) {
+            return TableCte.CAMPO_NULO;
+        } else {
+            return codProva;
+        }
     }
 
     public void setCodProva(String codProva) {

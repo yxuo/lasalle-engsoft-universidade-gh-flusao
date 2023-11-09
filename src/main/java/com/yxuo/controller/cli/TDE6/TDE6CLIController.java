@@ -1,4 +1,4 @@
-package com.yxuo.controller.cli;
+package com.yxuo.controller.cli.TDE6;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -455,4 +455,177 @@ public class TDE6CLIController {
 
     // #endregion Q6
 
+    // #region Q7
+
+    /**
+     * Selecionar o nome do professor e o nome da disciplina ministrada
+     * 
+     * Query: {@code Professor <--- TURMA ---> Disciplina }
+     * 
+     * @return { prof.nome, COUNT(prof.id) }
+     * 
+     * @throws SQLException
+     */
+    public String getQ7String() throws SQLException {
+        String response = "";
+        List<TurmaAC> items = tde6Repository.getQ7();
+        List<String> headers = getQ7Header();
+        List<Integer> maxLength = getQ7MaxLength(items, headers);
+        response += CLI.getTableString(headers, maxLength);
+        response += getQ7Body(items, maxLength);
+        return response;
+    }
+
+    private List<String> getQ7Header() {
+        return Arrays.asList(
+                TableCte.LINHA,
+                professor.getNomeColumn() + " PROF.",
+                disciplina.getNomeColumn() + " DISC."
+                );
+    }
+
+    private <T> List<Serializable> getQ7BodyItem(T firstItem, TurmaAC obj) {
+        return Arrays.asList(
+                firstItem.toString(),
+                obj.getProfessor().getNome(),
+                obj.getDisciplina().getNome());
+    }
+
+    private String getQ7Body(List<TurmaAC> items, List<Integer> maxLength) throws SQLException {
+        String response = "";
+        Integer count = 1;
+        for (TurmaAC obj : items) {
+            response += CLI.getTableString(getQ7BodyItem(count, obj), maxLength);
+            count++;
+        }
+        return response;
+    }
+
+    private List<Integer> getQ7MaxLength(List<TurmaAC> items, List<String> headers) {
+        List<Integer> maxLength = new ArrayList<>();
+        // Header
+        maxLength = CLI.getMaxLength(headers, maxLength);
+        // Body
+        for (TurmaAC obj : items) {
+            maxLength = CLI.getMaxLength(getQ7BodyItem("", obj), maxLength);
+        }
+        return maxLength;
+    }
+
+    // #endregion Q7
+
+    // #region Q8
+
+    /**
+     * Selecionar o nome do professor e o nome da disciplina ministrada
+     * 
+     * Query: {@code Professor <--- TURMA ---> Disciplina }
+     * 
+     * @return { prof.nome, COUNT(prof.id) }
+     * 
+     * @throws SQLException
+     */
+    public String getQ8String() throws SQLException {
+        String response = "";
+        List<DisciplinaAC> items = tde6Repository.getQ8();
+        List<String> headers = getQ8Header();
+        List<Integer> maxLength = getQ8MaxLength(items, headers);
+        response += CLI.getTableString(headers, maxLength);
+        response += getQ8Body(items, maxLength);
+        return response;
+    }
+
+    private List<String> getQ8Header() {
+        return Arrays.asList(
+                TableCte.LINHA,
+                disciplina.getNomeColumn() + " DISC."
+                );
+    }
+
+    private <T> List<Serializable> getQ8BodyItem(T firstItem, DisciplinaAC obj) {
+        return Arrays.asList(
+                firstItem.toString(),
+                obj.getNome());
+    }
+
+    private String getQ8Body(List<DisciplinaAC> items, List<Integer> maxLength) throws SQLException {
+        String response = "";
+        Integer count = 1;
+        for (DisciplinaAC obj : items) {
+            response += CLI.getTableString(getQ8BodyItem(count, obj), maxLength);
+            count++;
+        }
+        return response;
+    }
+
+    private List<Integer> getQ8MaxLength(List<DisciplinaAC> items, List<String> headers) {
+        List<Integer> maxLength = new ArrayList<>();
+        // Header
+        maxLength = CLI.getMaxLength(headers, maxLength);
+        // Body
+        for (DisciplinaAC obj : items) {
+            maxLength = CLI.getMaxLength(getQ8BodyItem("", obj), maxLength);
+        }
+        return maxLength;
+    }
+
+    // #endregion Q8
+
+    // #region Q9
+
+    /**
+     * Q) Selecionar as provas e suas disciplinas que não foram aplicadas
+     * 
+     * Query: {@code Disciplina <--- Turma <--- PROVA }
+     * 
+     * @throws SQLException
+     */
+    public String getQ9String() throws SQLException {
+        String response = "";
+        List<ProvaAC> items = tde6Repository.getQ9();
+        List<String> headers = getQ9Header();
+        List<Integer> maxLength = getQ9MaxLength(items, headers);
+        response += CLI.getTableString(headers, maxLength);
+        response += getQ9Body(items, maxLength);
+        return response;
+    }
+
+    private List<String> getQ9Header() {
+        return Arrays.asList(
+                TableCte.LINHA,
+                prova.getCodProvaColumn(),
+                disciplina.getNomeColumn() + " DISC."
+                );
+    }
+
+    private <T> List<Serializable> getQ9BodyItem(T firstItem, ProvaAC obj) {
+        return Arrays.asList(
+                firstItem.toString(),
+                obj.getCodProva(),
+                obj.getTurma().getDisciplina().getNome()
+                );
+    }
+
+    private String getQ9Body(List<ProvaAC> items, List<Integer> maxLength) throws SQLException {
+        String response = "";
+        Integer count = 1;
+        for (ProvaAC obj : items) {
+            response += CLI.getTableString(getQ9BodyItem(count, obj), maxLength);
+            count++;
+        }
+        return response;
+    }
+
+    private List<Integer> getQ9MaxLength(List<ProvaAC> items, List<String> headers) {
+        List<Integer> maxLength = new ArrayList<>();
+        // Header
+        maxLength = CLI.getMaxLength(headers, maxLength);
+        // Body
+        for (ProvaAC obj : items) {
+            maxLength = CLI.getMaxLength(getQ9BodyItem("", obj), maxLength);
+        }
+        return maxLength;
+    }
+
+    // #endregion Q9
 }

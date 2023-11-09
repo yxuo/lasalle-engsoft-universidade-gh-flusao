@@ -42,10 +42,6 @@ public final class Query {
         return type + " JOIN " + table.toString() + " ON " + a.toString() + " = " + b.toString() + "\n";
     }
 
-    public static final <T> String as(T field) {
-        return as(field, "");
-    }
-
     public static final <T> String as(T field, String prefix) {
         return field.toString() + " AS " + prefix + field.toString();
     }

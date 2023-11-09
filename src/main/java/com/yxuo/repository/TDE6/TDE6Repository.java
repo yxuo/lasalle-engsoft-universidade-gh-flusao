@@ -406,5 +406,139 @@ public class TDE6Repository extends BaseRepository {
     }
 
     // endregion Q6
+  
+    // #region Q7
 
+    /**
+     * Q) Selecionar o nome do professor e o nome da disciplina ministrada
+     * </br>
+     * </br>
+     * 
+     * Query: {@code
+     * Professor <--- TURMA ---> Disciplina
+     * }
+     * 
+     * @throws SQLException
+     */
+    public List<TurmaAC> getQ7() throws SQLException {
+        List<TurmaAC> objects = new ArrayList<>();
+        String query = Query.select(
+                "p." + Query.as(professor.getNomeColumn(), "p_"),
+                "d." + Query.as(disciplina.getNomeColumn(), "d_")
+            )
+            + "FROM " + professor.getTableName() + " p" + "\n"
+            + "LEFT JOIN " + turma.getTableName() + " t ON p." + professor.getIdColumn() + " = " + turma.getProfessorColumn() + "\n"
+            + "LEFT JOIN " + disciplina.getTableName() + " d ON d." + disciplina.getIdColumn() + " = " + turma.getDisciplinaColumn() + "\n"
+            + "WHERE " + disciplina.getIdColumn() + " IS NOT NULL"
+            ;
+        DBConnector.parseQuery(query);
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    objects.add(construirQ7(resultSet));
+                }
+            }
+        }
+        return objects;
+    }
+
+    private TurmaAC construirQ7(ResultSet result) throws SQLException {
+        ProfessorAC professor = new ProfessorAC();
+        professor.setNome(result.getString("p_" + professor.getNomeColumn()));
+        DisciplinaAC disciplina = new DisciplinaAC();
+        disciplina.setNome(result.getString("d_" + disciplina.getNomeColumn()));
+        TurmaAC turma = new TurmaAC();
+        turma.setDisciplina(disciplina);
+        turma.setProfessor(professor);
+        return turma;
+    }
+
+    // endregion Q7
+  
+    // #region Q8
+
+    /**
+     * Q) Selecionar os nomes das disciplinas sem turmas
+     * </br>
+     * </br>
+     * 
+     * Query: {@code
+     * TURMA ---> Disciplina
+     * }
+     * 
+     * @throws SQLException
+     */
+    public List<DisciplinaAC> getQ8() throws SQLException {
+        List<DisciplinaAC> objects = new ArrayList<>();
+        String query = Query.select(
+               disciplina.getNomeColumn()
+            )
+            + "FROM " + disciplina.getTableName() + "\n"
+            + "LEFT JOIN " + turma.getTableName() + " t ON " + turma.getDisciplinaColumn() + " = " + disciplina.getIdColumn() + "\n"
+            + "WHERE " + turma.getIdColumn() + " IS NULL"
+            ;
+        DBConnector.parseQuery(query);
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    objects.add(construirQ8(resultSet));
+                }
+            }
+        }
+        return objects;
+    }
+
+    private DisciplinaAC construirQ8(ResultSet result) throws SQLException {
+        DisciplinaAC disciplina = new DisciplinaAC();
+        disciplina.setNome(result.getString(disciplina.getNomeColumn()));
+        return disciplina;
+    }
+
+    // endregion Q8
+  
+    // #region Q9
+
+    /**
+     * Q) Selecionar as provas e suas disciplinas que não foram aplicadas
+     * </br>
+     * </br>
+     * 
+     * Query: {@code Disciplina <--- Turma <--- PROVA }
+     * 
+     * @throws SQLException
+     */
+    public List<ProvaAC> getQ9() throws SQLException {
+        List<ProvaAC> objects = new ArrayList<>();
+        String query = Query.select(
+               prova.getCodProvaColumn(),
+               "d." + disciplina.getNomeColumn()
+            )
+            + "FROM " + prova.getTableName() + " p \n"
+            + "LEFT JOIN " + turma.getTableName() + " t ON p." + prova.getTurmaColumn() + " = t." + turma.getIdColumn() + "\n"
+            + "RIGHT JOIN " + disciplina.getTableName() + " d ON d." + disciplina.getIdColumn() + " = t." + turma.getDisciplinaColumn() + "\n"
+            + "WHERE " + prova.getIdColumn() + " IS NULL"
+            ;
+        DBConnector.parseQuery(query);
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    objects.add(construirQ9(resultSet));
+                }
+            }
+        }
+        return objects;
+    }
+
+    private ProvaAC construirQ9(ResultSet result) throws SQLException {
+        DisciplinaAC disciplina = new DisciplinaAC();
+        disciplina.setNome(result.getString(disciplina.getNomeColumn()));
+        TurmaAC turma = new TurmaAC();
+        turma.setDisciplina(disciplina);
+        ProvaAC prova = new ProvaAC();
+        prova.setCodProva(result.getString(prova.getCodProvaColumn()));
+        prova.setTurma(turma);
+        return prova;
+    }
+
+    // endregion Q9
 }
