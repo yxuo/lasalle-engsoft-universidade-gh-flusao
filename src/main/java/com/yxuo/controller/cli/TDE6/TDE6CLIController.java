@@ -9,10 +9,10 @@ import java.util.List;
 import com.yxuo.constant.TableCte;
 import com.yxuo.model.AlunoAC;
 import com.yxuo.model.DisciplinaAC;
-import com.yxuo.model.MatriculadoAC;
+import com.yxuo.model.CursaAC;
 import com.yxuo.model.ProfessorAC;
 import com.yxuo.model.ProvaAC;
-import com.yxuo.model.RealizaAC;
+import com.yxuo.model.RealizaProvaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.repository.TDE6.TDE6Repository;
 import com.yxuo.repository.TDE6.transfer.Tde6Q5Obj;
@@ -26,7 +26,7 @@ public class TDE6CLIController {
     private final DisciplinaAC disciplina = turma.getDisciplina();
     private final ProfessorAC professor = turma.getProfessor();
     private final AlunoAC aluno = new AlunoAC();
-    private final RealizaAC realiza = new RealizaAC();
+    private final RealizaProvaAC realiza = new RealizaProvaAC();
     private final ProvaAC prova = new ProvaAC();
 
     public TDE6CLIController() throws SQLException {
@@ -49,7 +49,7 @@ public class TDE6CLIController {
      */
     public String getQ1String() throws SQLException {
         String response = "";
-        List<MatriculadoAC> q1 = tde6Repository.getQ1();
+        List<CursaAC> q1 = tde6Repository.getQ1();
         List<Integer> maxLength = getQ1MaxLength(q1);
         response += getQ1Header(maxLength);
         response += getQ1Body(q1, maxLength);
@@ -58,7 +58,7 @@ public class TDE6CLIController {
 
     private String getQ1Header(List<Integer> maxLength) {
         String response = "";
-        MatriculadoAC matriculado = new MatriculadoAC();
+        CursaAC matriculado = new CursaAC();
         AlunoAC aluno = matriculado.getAluno();
         TurmaAC turma = matriculado.getTurma();
         response += CLI.getTableString(Arrays.asList(
@@ -73,10 +73,10 @@ public class TDE6CLIController {
         return response;
     }
 
-    private String getQ1Body(List<MatriculadoAC> q1, List<Integer> maxLength) throws SQLException {
+    private String getQ1Body(List<CursaAC> q1, List<Integer> maxLength) throws SQLException {
         String response = "";
         Integer count = 1;
-        for (MatriculadoAC matriculado : q1) {
+        for (CursaAC matriculado : q1) {
             AlunoAC aluno = matriculado.getAluno();
             TurmaAC turma = matriculado.getTurma();
             response += CLI.getTableString(Arrays.asList(
@@ -93,7 +93,7 @@ public class TDE6CLIController {
         return response;
     }
 
-    private List<Integer> getQ1MaxLength(List<MatriculadoAC> q1) {
+    private List<Integer> getQ1MaxLength(List<CursaAC> q1) {
         List<Integer> maxLength = new ArrayList<>();
 
         AlunoAC aluno = new AlunoAC();
@@ -110,7 +110,7 @@ public class TDE6CLIController {
                         turma.getHoraFimColumn()),
                 maxLength);
 
-        for (MatriculadoAC matriculado : q1) {
+        for (CursaAC matriculado : q1) {
             AlunoAC alunoI = matriculado.getAluno();
             TurmaAC turmaI = matriculado.getTurma();
             maxLength = CLI.getMaxLength(
@@ -274,7 +274,7 @@ public class TDE6CLIController {
      */
     public String getQ4String() throws SQLException {
         String response = "";
-        List<RealizaAC> q4 = tde6Repository.getQ4();
+        List<RealizaProvaAC> q4 = tde6Repository.getQ4();
         List<String> headers = getQ4Header(q4);
         List<Integer> maxLength = getQ4MaxLength(q4, headers);
         response += CLI.getTableString(headers, maxLength);
@@ -282,7 +282,7 @@ public class TDE6CLIController {
         return response;
     }
 
-    private List<String> getQ4Header(List<RealizaAC> q3) {
+    private List<String> getQ4Header(List<RealizaProvaAC> q3) {
         return Arrays.asList(
                 TableCte.LINHA,
                 turma.getIdColumn(),
@@ -292,7 +292,7 @@ public class TDE6CLIController {
                 realiza.getNotaColumn());
     }
 
-    private <T> List<Serializable> getQ4BodyItem(T firstItem, RealizaAC realiza) {
+    private <T> List<Serializable> getQ4BodyItem(T firstItem, RealizaProvaAC realiza) {
         return Arrays.asList(
                 firstItem.toString(),
                 realiza.getProva().getTurma().getId(),
@@ -302,22 +302,22 @@ public class TDE6CLIController {
                 realiza.getNota());
     }
 
-    private String getQ4Body(List<RealizaAC> items, List<Integer> maxLength) throws SQLException {
+    private String getQ4Body(List<RealizaProvaAC> items, List<Integer> maxLength) throws SQLException {
         String response = "";
         Integer count = 1;
-        for (RealizaAC realiza : items) {
+        for (RealizaProvaAC realiza : items) {
             response += CLI.getTableString(getQ4BodyItem(count, realiza), maxLength);
             count++;
         }
         return response;
     }
 
-    private List<Integer> getQ4MaxLength(List<RealizaAC> items, List<String> headers) {
+    private List<Integer> getQ4MaxLength(List<RealizaProvaAC> items, List<String> headers) {
         List<Integer> maxLength = new ArrayList<>();
         // Header
         maxLength = CLI.getMaxLength(headers, maxLength);
         // Body
-        for (RealizaAC realiza : items) {
+        for (RealizaProvaAC realiza : items) {
             maxLength = CLI.getMaxLength(getQ4BodyItem("", realiza), maxLength);
         }
         return maxLength;

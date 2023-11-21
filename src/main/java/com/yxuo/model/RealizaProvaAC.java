@@ -1,32 +1,35 @@
 package com.yxuo.model;
 
-public class RealizaAC extends BaseEntity {
+/**
+ * Também chamado de "Cursa", mas na implementação se chama RealizaAC.
+ */
+public class RealizaProvaAC extends BaseEntity {
     private int idRealiza = -1;
     private double nota = -1;
-    private MatriculadoAC matriculado = new MatriculadoAC();
+    private CursaAC matriculado = new CursaAC();
     private ProvaAC prova = new ProvaAC();
 
-    private static final String TABLE_NAME = "RealizaAC";
+    private static final String TABLE_NAME = "RealizaProvaAC";
     private static final String ID_REALIZA_COLUMN = "idRealiza";
     private static final String NOTA_COLUMN = "nota";
     private static final String MATIRCULADO_COLUMN = "matriculado";
     private static final String PROVA_COLUMN = "prova";
 
-    public RealizaAC() {
+    public RealizaProvaAC() {
     }
 
-    public RealizaAC(int idRealiza) {
+    public RealizaProvaAC(int idRealiza) {
         this.idRealiza = idRealiza;
     }
 
-    public RealizaAC(int idRealiza, double nota, int idMatriculado, int idProva) {
+    public RealizaProvaAC(int idRealiza, double nota, int idMatriculado, int idProva) {
         this.idRealiza = idRealiza;
         this.nota = nota;
-        this.matriculado = new MatriculadoAC(idMatriculado);
+        this.matriculado = new CursaAC(idMatriculado);
         this.prova = new ProvaAC(idProva);
     }
 
-    public RealizaAC(int idRealiza, double nota, MatriculadoAC matriculado, ProvaAC prova) {
+    public RealizaProvaAC(int idRealiza, double nota, CursaAC matriculado, ProvaAC prova) {
         this.idRealiza = idRealiza;
         this.nota = nota;
         this.matriculado = matriculado;
@@ -80,11 +83,11 @@ public class RealizaAC extends BaseEntity {
         this.nota = nota;
     }
 
-    public MatriculadoAC getMatriculado() {
+    public CursaAC getMatriculado() {
         return matriculado;
     }
 
-    public void setMatriculado(MatriculadoAC matriculado) {
+    public void setMatriculado(CursaAC matriculado) {
         this.matriculado = matriculado;
     }
 

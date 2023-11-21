@@ -1,9 +1,9 @@
 package com.yxuo.repository.TDE6.transfer;
 
-import com.yxuo.model.RealizaAC;
+import com.yxuo.model.RealizaProvaAC;
 
 public class Tde6Q5Obj {
-    private RealizaAC realiza = new RealizaAC();
+    private RealizaProvaAC realiza = new RealizaProvaAC();
     private Integer realizaNotaMax = 0;
     private Integer realizaNotaMin = 0;
     private Integer realizaNotaAvg = 0;
@@ -11,18 +11,18 @@ public class Tde6Q5Obj {
     public Tde6Q5Obj() {
     }
 
-    public Tde6Q5Obj(RealizaAC realiza, Integer realizaNotaMax, Integer realizaNotaMin, Integer realizaNotaAvg) {
+    public Tde6Q5Obj(RealizaProvaAC realiza, Integer realizaNotaMax, Integer realizaNotaMin, Integer realizaNotaAvg) {
         this.realiza = realiza;
         this.realizaNotaMax = realizaNotaMax;
         this.realizaNotaMin = realizaNotaMin;
         this.realizaNotaAvg = realizaNotaAvg;
     }
 
-    public RealizaAC getRealiza() {
+    public RealizaProvaAC getRealiza() {
         return this.realiza;
     }
 
-    public void setRealiza(RealizaAC realiza) {
+    public void setRealiza(RealizaProvaAC realiza) {
         this.realiza = realiza;
     }
 

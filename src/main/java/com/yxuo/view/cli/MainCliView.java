@@ -61,7 +61,7 @@ public class MainCliView {
                 break;
             case VER_BANCO_DE_DADOS:
                 System.out.println("-".repeat(20) + "\n");
-                System.out.println("Em construção...");
+                System.out.println("Em construção...\n");
                 System.out.println("-".repeat(20) + "\n");
                 break;
             case SAIR:

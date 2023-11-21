@@ -9,10 +9,10 @@ import java.util.List;
 
 import com.yxuo.model.AlunoAC;
 import com.yxuo.model.DisciplinaAC;
-import com.yxuo.model.MatriculadoAC;
+import com.yxuo.model.CursaAC;
 import com.yxuo.model.ProfessorAC;
 import com.yxuo.model.ProvaAC;
-import com.yxuo.model.RealizaAC;
+import com.yxuo.model.RealizaProvaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.repository.BaseRepository;
 import com.yxuo.repository.TDE6.transfer.Tde6Q5Obj;
@@ -23,13 +23,13 @@ import com.yxuo.util.Query;
 public class TDE6Repository extends BaseRepository {
 
     private final Connection connection;
-    private final MatriculadoAC matriculado = new MatriculadoAC();
+    private final CursaAC matriculado = new CursaAC();
     private final AlunoAC aluno = new AlunoAC();
     private final TurmaAC turma = new TurmaAC();
     private final DisciplinaAC disciplina = new DisciplinaAC();
     private final ProfessorAC professor = new ProfessorAC();
     private final ProvaAC prova = new ProvaAC();
-    private final RealizaAC realiza = new RealizaAC();
+    private final RealizaProvaAC realiza = new RealizaProvaAC();
 
     public TDE6Repository() throws SQLException {
         this.connection = DBConnector.getConnection();
@@ -42,8 +42,8 @@ public class TDE6Repository extends BaseRepository {
 
     // #region Q1
 
-    public List<MatriculadoAC> getQ1() throws SQLException {
-        List<MatriculadoAC> matriculados = getQ1Matriculados();
+    public List<CursaAC> getQ1() throws SQLException {
+        List<CursaAC> matriculados = getQ1Matriculados();
         return matriculados;
     }
 
@@ -59,8 +59,8 @@ public class TDE6Repository extends BaseRepository {
      * 
      * @throws SQLException
      */
-    private List<MatriculadoAC> getQ1Matriculados() throws SQLException {
-        List<MatriculadoAC> matirculados = new ArrayList<>();
+    private List<CursaAC> getQ1Matriculados() throws SQLException {
+        List<CursaAC> matirculados = new ArrayList<>();
         String query = "SELECT "
                 // aluno
                 + aluno.getNomeColumn() + ", " + aluno.getMatColumn() + ", "
@@ -84,7 +84,7 @@ public class TDE6Repository extends BaseRepository {
         return matirculados;
     }
 
-    private MatriculadoAC construirQ1Matriculados(ResultSet resultado) throws SQLException {
+    private CursaAC construirQ1Matriculados(ResultSet resultado) throws SQLException {
         AlunoAC aluno = new AlunoAC(
                 -1,
                 resultado.getString(this.aluno.getMatColumn()),
@@ -95,7 +95,7 @@ public class TDE6Repository extends BaseRepository {
                 resultado.getString(this.turma.getDiaColumn()),
                 resultado.getString(this.turma.getHoraInicioColumn()),
                 resultado.getString(this.turma.getHoraFimColumn()));
-        MatriculadoAC matirculado = new MatriculadoAC(-1, aluno, turma);
+        CursaAC matirculado = new CursaAC(-1, aluno, turma);
         return matirculado;
     }
 
@@ -247,8 +247,8 @@ public class TDE6Repository extends BaseRepository {
      * 
      * @throws SQLException
      */
-    public List<RealizaAC> getQ4() throws SQLException {
-        List<RealizaAC> realizas = new ArrayList<>();
+    public List<RealizaProvaAC> getQ4() throws SQLException {
+        List<RealizaProvaAC> realizas = new ArrayList<>();
         String query =
             Query.select(
                 turma.getIdColumn(), "d." + disciplina.getNomeColumn(),
@@ -272,7 +272,7 @@ public class TDE6Repository extends BaseRepository {
         return realizas;
     }
 
-    private RealizaAC construirQ4(ResultSet resultado) throws SQLException {
+    private RealizaProvaAC construirQ4(ResultSet resultado) throws SQLException {
         DisciplinaAC disciplina = new DisciplinaAC();
         disciplina.setNome(resultado.getString(disciplina.getNomeColumn()));
         TurmaAC turma = new TurmaAC();
@@ -282,7 +282,7 @@ public class TDE6Repository extends BaseRepository {
         prova.setCodProva(resultado.getString(prova.getCodProvaColumn()));
         prova.setSituacao(resultado.getString(prova.getSituacaoColumn()));
         prova.setTurma(turma);
-        RealizaAC realiza = new RealizaAC();
+        RealizaProvaAC realiza = new RealizaProvaAC();
         realiza.setNota(resultado.getInt("r_AVG_" + realiza.getNotaColumn()));
         realiza.setProva(prova);
         return realiza;
@@ -350,7 +350,7 @@ public class TDE6Repository extends BaseRepository {
         prova.setCodProva(result.getString(prova.getCodProvaColumn()));
         prova.setSituacao(result.getString(prova.getSituacaoColumn()));
         prova.setTurma(turma);
-        RealizaAC realiza = new RealizaAC();
+        RealizaProvaAC realiza = new RealizaProvaAC();
         realiza.setProva(prova);
         Tde6Q5Obj obj = new Tde6Q5Obj();
         obj.setRealiza(realiza);

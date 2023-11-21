@@ -58,6 +58,7 @@ public class TDE6CliView {
         clearCli();
         System.out.println("\n" + "-".repeat(20) + "\n");
         switch (selectedOption) {
+            
             case QUESTÃO_1:
                 System.out.println("\n" + tde6cliController.getQ1String());
                 break;

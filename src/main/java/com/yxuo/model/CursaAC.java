@@ -1,29 +1,32 @@
 package com.yxuo.model;
 
-public class MatriculadoAC extends BaseEntity {
-    private int idMatriculado;
+/**
+ * Também chamado de "Matriculado".
+ */
+public class CursaAC extends BaseEntity {
+    private int idCursa;
     private AlunoAC aluno;
     private TurmaAC turma;
 
-    private static final String TABLE_NAME = "MatriculadoAC";
-    private static final String ID_MATIRCULADO_COLUMN = "idMatriculado";
+    private static final String TABLE_NAME = "CursaAC";
+    private static final String ID_CURSA_COLUMN = "idCursa";
     private static final String ALUNO_COLUMN = "aluno";
     private static final String TURMA_COLUMN = "turma";
 
-    public MatriculadoAC() {
-        idMatriculado = -1;
+    public CursaAC() {
+        idCursa = -1;
         aluno = new AlunoAC();
         turma = new TurmaAC();
     }
 
-    public MatriculadoAC(int idMatriculado) {
-        this.idMatriculado = idMatriculado;
+    public CursaAC(int idMatriculado) {
+        this.idCursa = idMatriculado;
         this.aluno = new AlunoAC();
         this.turma = new TurmaAC();
     }
 
-    public MatriculadoAC(int idMatriculado, AlunoAC aluno, TurmaAC turma) {
-        this.idMatriculado = idMatriculado;
+    public CursaAC(int idMatriculado, AlunoAC aluno, TurmaAC turma) {
+        this.idCursa = idMatriculado;
         this.aluno = aluno;
         this.turma = turma;
     }
@@ -37,7 +40,7 @@ public class MatriculadoAC extends BaseEntity {
     
     @Override
     public String getIdColumn() {
-        return handleNamingStrategy(ID_MATIRCULADO_COLUMN);
+        return handleNamingStrategy(ID_CURSA_COLUMN);
     }
 
     public String getAlunoColumn() {
@@ -52,15 +55,15 @@ public class MatriculadoAC extends BaseEntity {
     
         @Override
         public Integer getId() {
-            return getIdMatriculado();
+            return getIdCursa();
         }
 
-    public int getIdMatriculado() {
-        return idMatriculado;
+    public int getIdCursa() {
+        return idCursa;
     }
 
-    public void setIdMatriculado(int idMatriculado) {
-        this.idMatriculado = idMatriculado;
+    public void setIdCursa(int idMatriculado) {
+        this.idCursa = idMatriculado;
     }
 
     public AlunoAC getAluno() {
@@ -82,7 +85,7 @@ public class MatriculadoAC extends BaseEntity {
     @Override
     public String toString() {
         return "MatriculadoAC{" +
-                "idMatriculado=" + idMatriculado +
+                "idMatriculado=" + idCursa +
                 ", aluno=" + aluno +
                 ", turma=" + turma +
                 '}';

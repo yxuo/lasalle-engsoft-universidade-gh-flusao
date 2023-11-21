@@ -8,25 +8,25 @@ import java.util.List;
 
 import com.yxuo.model.AlunoAC;
 import com.yxuo.model.DisciplinaAC;
-import com.yxuo.model.MatriculadoAC;
+import com.yxuo.model.CursaAC;
 import com.yxuo.model.ProfessorAC;
 import com.yxuo.model.ProvaAC;
-import com.yxuo.model.RealizaAC;
+import com.yxuo.model.RealizaProvaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.repository.AlunoRepository;
 import com.yxuo.repository.DisciplinaRepository;
-import com.yxuo.repository.MatriculadoRepository;
+import com.yxuo.repository.CursaRepository;
 import com.yxuo.repository.ProfessorRepository;
 import com.yxuo.repository.ProvaRepository;
-import com.yxuo.repository.RealizaRepository;
+import com.yxuo.repository.RealizaProvaRepository;
 import com.yxuo.repository.TurmaRepository;
 
 public class Migration {
     private Connection connection;
     private AlunoRepository alunoRepository;
-    private MatriculadoRepository matriculadoRepository;
+    private CursaRepository matriculadoRepository;
     private ProvaRepository provaRepository;
-    private RealizaRepository realizaRepository;
+    private RealizaProvaRepository realizaRepository;
     private ProfessorRepository professorRepository;
     private DisciplinaRepository disciplinaRepository;
     private TurmaRepository turmaRepository;
@@ -34,9 +34,9 @@ public class Migration {
     public Migration() throws SQLException {
         connection = DBConnector.getConnection();
         alunoRepository = new AlunoRepository(connection);
-        matriculadoRepository = new MatriculadoRepository(connection);
+        matriculadoRepository = new CursaRepository(connection);
         provaRepository = new ProvaRepository(connection);
-        realizaRepository = new RealizaRepository(connection);
+        realizaRepository = new RealizaProvaRepository(connection);
         professorRepository = new ProfessorRepository(connection);
         disciplinaRepository = new DisciplinaRepository(connection);
         turmaRepository = new TurmaRepository(connection);
@@ -45,9 +45,9 @@ public class Migration {
     public Migration(Connection con) throws SQLException {
         connection = con;
         alunoRepository = new AlunoRepository(connection);
-        matriculadoRepository = new MatriculadoRepository(connection);
+        matriculadoRepository = new CursaRepository(connection);
         provaRepository = new ProvaRepository(connection);
-        realizaRepository = new RealizaRepository(connection);
+        realizaRepository = new RealizaProvaRepository(connection);
         professorRepository = new ProfessorRepository(connection);
         disciplinaRepository = new DisciplinaRepository(connection);
         turmaRepository = new TurmaRepository(connection);
@@ -79,7 +79,7 @@ public class Migration {
         List<ProfessorAC> Professores = migrarProfessor();
         List<TurmaAC> Turmas = migrarTurma(Disciplinas, Professores);
         List<ProvaAC> Provas = migrarProva(Turmas);
-        List<MatriculadoAC> Matriculados = migrarMatriculado(Alunos, Turmas);
+        List<CursaAC> Matriculados = migrarMatriculado(Alunos, Turmas);
         migrarRealiza(Matriculados, Provas);
     }
 
@@ -117,8 +117,8 @@ public class Migration {
         return Provas;
     }
 
-    private List<RealizaAC> migrarRealiza(List<MatriculadoAC> Matriculados, List<ProvaAC> Provas) throws SQLException {
-        List<RealizaAC> Realizas = new ArrayList<>();
+    private List<RealizaProvaAC> migrarRealiza(List<CursaAC> Matriculados, List<ProvaAC> Provas) throws SQLException {
+        List<RealizaProvaAC> Realizas = new ArrayList<>();
         List<List<Integer>> protoRealizas = Arrays.asList(
                 Arrays.asList(10, 1, 1),
                 Arrays.asList(1, 24, 1),
@@ -150,7 +150,7 @@ public class Migration {
                 Arrays.asList(9, 44, 4));
 
         for (List<Integer> protoRealiza : protoRealizas) {
-            RealizaAC realiza = new RealizaAC(
+            RealizaProvaAC realiza = new RealizaProvaAC(
                     realizaRepository.obterProximoID(),
                     protoRealiza.get(0),
                     protoRealiza.get(1),
@@ -206,39 +206,39 @@ public class Migration {
         return Turmas;
     }
 
-    private List<MatriculadoAC> migrarMatriculado(List<AlunoAC> Alunos, List<TurmaAC> Turmas) throws SQLException {
-        List<MatriculadoAC> Matriculados = new ArrayList<>();
-        Matriculados.add(new MatriculadoAC(1, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(1, Turmas)));
-        Matriculados.add(new MatriculadoAC(21, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(22, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(23, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(4, Turmas)));
-        Matriculados.add(new MatriculadoAC(24, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(1, Turmas)));
-        Matriculados.add(new MatriculadoAC(25, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(26, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(27, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(5, Turmas)));
-        Matriculados.add(new MatriculadoAC(28, EntityUtil.getFromList(3, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(29, EntityUtil.getFromList(3, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(30, EntityUtil.getFromList(3, Alunos), EntityUtil.getFromList(4, Turmas)));
-        Matriculados.add(new MatriculadoAC(31, EntityUtil.getFromList(4, Alunos), EntityUtil.getFromList(1, Turmas)));
-        Matriculados.add(new MatriculadoAC(32, EntityUtil.getFromList(4, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(33, EntityUtil.getFromList(5, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(34, EntityUtil.getFromList(5, Alunos), EntityUtil.getFromList(5, Turmas)));
-        Matriculados.add(new MatriculadoAC(35, EntityUtil.getFromList(6, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(36, EntityUtil.getFromList(6, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(37, EntityUtil.getFromList(7, Alunos), EntityUtil.getFromList(4, Turmas)));
-        Matriculados.add(new MatriculadoAC(38, EntityUtil.getFromList(7, Alunos), EntityUtil.getFromList(1, Turmas)));
-        Matriculados.add(new MatriculadoAC(39, EntityUtil.getFromList(7, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(40, EntityUtil.getFromList(8, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(41, EntityUtil.getFromList(8, Alunos), EntityUtil.getFromList(5, Turmas)));
-        Matriculados.add(new MatriculadoAC(42, EntityUtil.getFromList(11, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(43, EntityUtil.getFromList(12, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(44, EntityUtil.getFromList(11, Alunos), EntityUtil.getFromList(4, Turmas)));
-        Matriculados.add(new MatriculadoAC(45, EntityUtil.getFromList(12, Alunos), EntityUtil.getFromList(1, Turmas)));
-        Matriculados.add(new MatriculadoAC(46, EntityUtil.getFromList(12, Alunos), EntityUtil.getFromList(2, Turmas)));
-        Matriculados.add(new MatriculadoAC(47, EntityUtil.getFromList(11, Alunos), EntityUtil.getFromList(3, Turmas)));
-        Matriculados.add(new MatriculadoAC(48, EntityUtil.getFromList(10, Alunos), EntityUtil.getFromList(5, Turmas)));
+    private List<CursaAC> migrarMatriculado(List<AlunoAC> Alunos, List<TurmaAC> Turmas) throws SQLException {
+        List<CursaAC> Matriculados = new ArrayList<>();
+        Matriculados.add(new CursaAC(1, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(1, Turmas)));
+        Matriculados.add(new CursaAC(21, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(22, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(23, EntityUtil.getFromList(1, Alunos), EntityUtil.getFromList(4, Turmas)));
+        Matriculados.add(new CursaAC(24, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(1, Turmas)));
+        Matriculados.add(new CursaAC(25, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(26, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(27, EntityUtil.getFromList(2, Alunos), EntityUtil.getFromList(5, Turmas)));
+        Matriculados.add(new CursaAC(28, EntityUtil.getFromList(3, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(29, EntityUtil.getFromList(3, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(30, EntityUtil.getFromList(3, Alunos), EntityUtil.getFromList(4, Turmas)));
+        Matriculados.add(new CursaAC(31, EntityUtil.getFromList(4, Alunos), EntityUtil.getFromList(1, Turmas)));
+        Matriculados.add(new CursaAC(32, EntityUtil.getFromList(4, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(33, EntityUtil.getFromList(5, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(34, EntityUtil.getFromList(5, Alunos), EntityUtil.getFromList(5, Turmas)));
+        Matriculados.add(new CursaAC(35, EntityUtil.getFromList(6, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(36, EntityUtil.getFromList(6, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(37, EntityUtil.getFromList(7, Alunos), EntityUtil.getFromList(4, Turmas)));
+        Matriculados.add(new CursaAC(38, EntityUtil.getFromList(7, Alunos), EntityUtil.getFromList(1, Turmas)));
+        Matriculados.add(new CursaAC(39, EntityUtil.getFromList(7, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(40, EntityUtil.getFromList(8, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(41, EntityUtil.getFromList(8, Alunos), EntityUtil.getFromList(5, Turmas)));
+        Matriculados.add(new CursaAC(42, EntityUtil.getFromList(11, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(43, EntityUtil.getFromList(12, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(44, EntityUtil.getFromList(11, Alunos), EntityUtil.getFromList(4, Turmas)));
+        Matriculados.add(new CursaAC(45, EntityUtil.getFromList(12, Alunos), EntityUtil.getFromList(1, Turmas)));
+        Matriculados.add(new CursaAC(46, EntityUtil.getFromList(12, Alunos), EntityUtil.getFromList(2, Turmas)));
+        Matriculados.add(new CursaAC(47, EntityUtil.getFromList(11, Alunos), EntityUtil.getFromList(3, Turmas)));
+        Matriculados.add(new CursaAC(48, EntityUtil.getFromList(10, Alunos), EntityUtil.getFromList(5, Turmas)));
 
-        for (MatriculadoAC matriculado : Matriculados) {
+        for (CursaAC matriculado : Matriculados) {
             matriculadoRepository.inserir(matriculado);
         }
         return Matriculados;
