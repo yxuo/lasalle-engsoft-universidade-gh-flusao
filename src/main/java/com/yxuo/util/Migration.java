@@ -7,15 +7,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.yxuo.model.AlunoAC;
-import com.yxuo.model.DisciplinaAC;
 import com.yxuo.model.CursaAC;
+import com.yxuo.model.DisciplinaAC;
 import com.yxuo.model.ProfessorAC;
 import com.yxuo.model.ProvaAC;
 import com.yxuo.model.RealizaProvaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.repository.AlunoRepository;
-import com.yxuo.repository.DisciplinaRepository;
 import com.yxuo.repository.CursaRepository;
+import com.yxuo.repository.DisciplinaRepository;
 import com.yxuo.repository.ProfessorRepository;
 import com.yxuo.repository.ProvaRepository;
 import com.yxuo.repository.RealizaProvaRepository;
@@ -245,6 +245,7 @@ public class Migration {
     }
 
     public static void main(String[] args) throws SQLException {
+
         System.out.println("--- Migrations ---");
         String cmd = "run";
         if (args.length > 0) {
