@@ -262,12 +262,15 @@ public class Migration {
             migration.criarTabelas();
             System.out.println("\nAplicando migrações...\n");
             migration.migrar();
-
+            System.out.println("Feito!");
         } else if (cmd.equals("clean")) {
             System.out.println("Apagando tabelas...");
             migration.apagarTabelas();
+            System.out.println("Feito!");
+        } else {
+            System.out.println(CLI.getError("Comando não encontrado!"));
+
         }
-        System.out.println("Feito!");
 
     }
 }

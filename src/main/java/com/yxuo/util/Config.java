@@ -25,8 +25,12 @@ public class Config {
         }
     }
 
-    public static String getProperty(String key) {
+    public static String get(String key) {
         return propertiesMap.get(key);
+    }
+    
+    public static String getOrDefault(String key, String defaultValue) {
+        return propertiesMap.getOrDefault(key, defaultValue);
     }
 
     public static Config getInstance() {

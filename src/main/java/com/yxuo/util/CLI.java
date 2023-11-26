@@ -32,6 +32,10 @@ public class CLI {
         System.out.flush();
     }
 
+    public static String getSuccess(String text) {
+        return ANSI_GREEN + text + ANSI_RESET;
+    }
+
     public static String getError(String text) {
         return ANSI_RED + text + ANSI_RESET;
     }

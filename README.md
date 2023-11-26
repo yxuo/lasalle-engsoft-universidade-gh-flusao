@@ -2,27 +2,27 @@
 *Um trabalho de engenharia de Software do Lasalle*
 
 
-## Iniciando o projeto
+# Iniciando o projeto
 
-### Requisitos
+## Requisitos
 
 - VS Code, Eclipse ou Intellij
 - [**Extension Pack for Java** - VSCode](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
 - Maven >= 3.95
 - Java JDK 17
 
-### Como rodar
+## Como rodar
 
 Instalar as dependências:
 
+```powershell
+mvn clean; mvn compile
 ```
-mvn compile
-```
-
+ 
 Criar o banco de dados e aplicar as migrações:
 
 ```powershell
-mvn exec:java@migration-run
+mvn exec:java@migration -Dargs=run
 ```
 
 Rodar o programa
@@ -31,6 +31,6 @@ Rodar o programa
 mvn exec:java@main
 ```
 
-## TDEs
+# TDEs
 
 - [TDE6](/docs/TDE6.md)
