@@ -104,7 +104,7 @@ public class TDE6Repository extends BaseRepository {
     // #region Q2
 
     /**
-     * 2) Selecione a matriícula e nome do professor, bem como, o código e
+     * 2) Selecione a matrícula e nome do professor, bem como, o código e
      * nome da disciplina
      * 
      * <ul>

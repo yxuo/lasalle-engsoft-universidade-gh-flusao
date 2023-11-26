@@ -23,7 +23,7 @@ public enum TDE6CliMenuEnum {
     static {
         descriptions.put("1", "Selecione matrícula e nome do aluno, bem como, código,"
                 + " turno, dia, hora início e hora fim das turmas que eles estão matriculados");
-        descriptions.put("2", "Selecione a matriícula e nome do professor, bem como, "
+        descriptions.put("2", "Selecione a matrícula e nome do professor, bem como, "
                 + "o código e nome da disciplina");
         descriptions.put("3", "Selecione  a matrícula e nome dos alunos que não estão "
                 + "matriculados em turmas.");
