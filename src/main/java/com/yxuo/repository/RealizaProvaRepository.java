@@ -56,7 +56,7 @@ public class RealizaProvaRepository extends BaseRepository {
     public List<RealizaProvaAC> listarTodos() throws SQLException {
         List<RealizaProvaAC> realizacoes = new ArrayList<>();
         String query = "SELECT * FROM " + realiza.getTableName();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
 
@@ -69,10 +69,11 @@ public class RealizaProvaRepository extends BaseRepository {
     }
 
     public void inserir(RealizaProvaAC realiza) throws SQLException {
-        String query = "INSERT INTO " + realiza.getTableName() + " (" + realiza.getIdColumn() + ", " + realiza.getNotaColumn() + ", "
+        String query = "INSERT INTO " + realiza.getTableName() + " (" + realiza.getIdColumn() + ", "
+                + realiza.getNotaColumn() + ", "
                 + realiza.getMatriculadoColumn() + ", "
                 + realiza.getProvaColumn() + ") VALUES (?, ?, ?, ?)";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, realiza.getId());
             statement.setDouble(2, realiza.getNota());
@@ -83,10 +84,11 @@ public class RealizaProvaRepository extends BaseRepository {
     }
 
     public void atualizar(RealizaProvaAC realiza) throws SQLException {
-        String query = "UPDATE " + realiza.getTableName() + " SET " + realiza.getNotaColumn() + " = ?, " + realiza.getMatriculadoColumn()
+        String query = "UPDATE " + realiza.getTableName() + " SET " + realiza.getNotaColumn() + " = ?, "
+                + realiza.getMatriculadoColumn()
                 + " = ?, "
                 + realiza.getProvaColumn() + " = ? WHERE " + realiza.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDouble(1, realiza.getNota());
             statement.setInt(2, realiza.getMatriculado().getIdCursa());
@@ -98,7 +100,7 @@ public class RealizaProvaRepository extends BaseRepository {
 
     public RealizaProvaAC buscarPorId(int id) throws SQLException {
         String query = "SELECT * FROM " + realiza.getTableName() + " WHERE " + realiza.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -118,14 +120,16 @@ public class RealizaProvaRepository extends BaseRepository {
                 realiza.getNotaColumn() + " DOUBLE, " +
                 realiza.getMatriculadoColumn() + " INT, " +
                 realiza.getProvaColumn() + " INT, " +
-                "FOREIGN KEY (" + realiza.getMatriculadoColumn() + ") REFERENCES " + matriculado.getTableName() + "(" + matriculado.getIdColumn()
+                "FOREIGN KEY (" + realiza.getMatriculadoColumn() + ") REFERENCES " + matriculado.getTableName() + "("
+                + matriculado.getIdColumn()
                 + ") ON DELETE CASCADE, "
                 +
-                "FOREIGN KEY (" + realiza.getProvaColumn() + ") REFERENCES " + prova.getTableName() + "(" + prova.getIdColumn()
+                "FOREIGN KEY (" + realiza.getProvaColumn() + ") REFERENCES " + prova.getTableName() + "("
+                + prova.getIdColumn()
                 + ") ON DELETE CASCADE"
                 +
                 ")";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.execute();
         }

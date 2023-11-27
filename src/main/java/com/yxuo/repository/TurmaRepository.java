@@ -15,8 +15,6 @@ import com.yxuo.util.DBConnector;
 
 public class TurmaRepository extends BaseRepository {
     private Connection connection;
-    private final String TABLE_NAME = "Turma";
-    private final String COLUMN_ID = "idTurma";
     private final DisciplinaRepository disciplinaRepository;
     private final ProfessorRepository professorRepository;
     private final TurmaAC turma;
@@ -47,7 +45,7 @@ public class TurmaRepository extends BaseRepository {
         return entity;
     }
 
-    private TurmaAC construirObjeto(ResultSet resultado) throws SQLException {
+    private TurmaAC construirObjeto(ResultSet resultado, Boolean subItens) throws SQLException {
         int idTurma = resultado.getInt(turma.getIdColumn());
         String turno = resultado.getString(turma.getTurnoColumn());
         String dia = resultado.getString(turma.getDiaColumn());
@@ -61,13 +59,18 @@ public class TurmaRepository extends BaseRepository {
     }
 
     public List<TurmaAC> listarTodos() throws SQLException {
+        return listarTodos(true);
+    }
+
+    public List<TurmaAC> listarTodos(Boolean subItens) throws SQLException {
         List<TurmaAC> turmas = new ArrayList<>();
         String query = "SELECT * FROM " + turma.getTableName();
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                TurmaAC turma = construirObjeto(resultSet);
+                TurmaAC turma = construirObjeto(resultSet, subItens);
                 turmas.add(turma);
             }
         }
@@ -84,6 +87,7 @@ public class TurmaRepository extends BaseRepository {
                 + turma.getDisciplinaColumn() + ", "
                 + turma.getProfessorColumn()
                 + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, turma.getId());
             statement.setString(2, turma.getTurno());
@@ -102,6 +106,7 @@ public class TurmaRepository extends BaseRepository {
                 + turma.getHoraInicioColumn() + " = ?, " + turma.getHoraFimColumn() + " = ?, " + turma.getIdColumn()
                 + " = ?, "
                 + turma.getProfessorColumn() + " = ? WHERE " + turma.getIdColumn() + " = ?";
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, turma.getTurno());
             statement.setString(2, turma.getDia());
@@ -115,12 +120,17 @@ public class TurmaRepository extends BaseRepository {
     }
 
     public TurmaAC buscarPorId(int id) throws SQLException {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?";
+        return buscarPorId(id, true);
+    }
+
+    public TurmaAC buscarPorId(int id, Boolean subItens) throws SQLException {
+        String query = "SELECT * FROM " + turma.getTableName() + " WHERE " + turma.getIdColumn() + " = ?";
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return construirObjeto(resultSet);
+                    return construirObjeto(resultSet, subItens);
                 }
             }
         }
@@ -146,7 +156,7 @@ public class TurmaRepository extends BaseRepository {
                 + professor.getIdColumn()
                 + ") ON DELETE CASCADE" +
                 ")";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.execute();
         }

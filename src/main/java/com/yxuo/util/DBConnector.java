@@ -18,7 +18,7 @@ public class DBConnector {
         }
     }
 
-    public static void parseQuery(String query) {
+    public static void printQuery(String query) {
         System.out.println(query);
     }
 }

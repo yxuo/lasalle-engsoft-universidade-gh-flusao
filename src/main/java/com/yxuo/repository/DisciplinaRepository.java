@@ -49,7 +49,7 @@ public class DisciplinaRepository extends BaseRepository {
     public List<DisciplinaAC> listarTodos() throws SQLException {
         List<DisciplinaAC> disciplinas = new ArrayList<>();
         String query = "SELECT * FROM " + disciplina.getTableName();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
 
@@ -62,9 +62,10 @@ public class DisciplinaRepository extends BaseRepository {
     }
 
     public void inserir(DisciplinaAC disciplina) throws SQLException {
-        String query = "INSERT INTO " + disciplina.getTableName() + " (" + disciplina.getIdColumn() + ", " + disciplina.getCodDisColumn() + ", "
+        String query = "INSERT INTO " + disciplina.getTableName() + " (" + disciplina.getIdColumn() + ", "
+                + disciplina.getCodDisColumn() + ", "
                 + disciplina.getNomeColumn() + ") VALUES (?, ?, ?)";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, disciplina.getId());
             statement.setString(2, disciplina.getCodDis());
@@ -74,10 +75,11 @@ public class DisciplinaRepository extends BaseRepository {
     }
 
     public void atualizar(DisciplinaAC disciplina) throws SQLException {
-        String query = "UPDATE " + disciplina.getTableName() + " SET " + disciplina.getCodDisColumn() + " = ?, " + disciplina.getNomeColumn()
+        String query = "UPDATE " + disciplina.getTableName() + " SET " + disciplina.getCodDisColumn() + " = ?, "
+                + disciplina.getNomeColumn()
                 + " = ? WHERE "
                 + disciplina.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, disciplina.getCodDis());
             statement.setString(2, disciplina.getNome());
@@ -88,7 +90,7 @@ public class DisciplinaRepository extends BaseRepository {
 
     public DisciplinaAC buscarPorId(int id) throws SQLException {
         String query = "SELECT * FROM " + disciplina.getTableName() + " WHERE " + disciplina.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -106,7 +108,7 @@ public class DisciplinaRepository extends BaseRepository {
                 disciplina.getCodDisColumn() + " VARCHAR(255), " +
                 disciplina.getNomeColumn() + " VARCHAR(255)" +
                 ")";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.execute();
         }

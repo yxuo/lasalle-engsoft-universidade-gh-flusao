@@ -162,11 +162,11 @@ public class Migration {
 
     private List<ProfessorAC> migrarProfessor() throws SQLException {
         List<ProfessorAC> Professores = new ArrayList<>();
-        Professores.add(new ProfessorAC(21, "P01", "GEORGE"));
-        Professores.add(new ProfessorAC(22, "P02", "HAMILTON"));
-        Professores.add(new ProfessorAC(23, "P03", "COSTA"));
-        Professores.add(new ProfessorAC(24, "P04", "CARLOS"));
-        Professores.add(new ProfessorAC(25, "P05", "JEAN"));
+        Professores.add(new ProfessorAC(21, "P01", "GEORGE", "DISPONIVEL"));
+        Professores.add(new ProfessorAC(22, "P02", "HAMILTON", "DISPONIVEL"));
+        Professores.add(new ProfessorAC(23, "P03", "COSTA", "DISPONIVEL"));
+        Professores.add(new ProfessorAC(24, "P04", "CARLOS", "DISPONIVEL"));
+        Professores.add(new ProfessorAC(25, "P05", "JEAN", "DISPONIVEL"));
         for (ProfessorAC professor : Professores) {
             professorRepository.inserir(professor);
         }

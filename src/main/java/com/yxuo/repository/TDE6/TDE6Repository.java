@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yxuo.model.AlunoAC;
-import com.yxuo.model.DisciplinaAC;
 import com.yxuo.model.CursaAC;
+import com.yxuo.model.DisciplinaAC;
 import com.yxuo.model.ProfessorAC;
 import com.yxuo.model.ProvaAC;
 import com.yxuo.model.RealizaProvaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.repository.BaseRepository;
-import com.yxuo.repository.TDE6.transfer.Tde6Q5Obj;
-import com.yxuo.repository.TDE6.transfer.Tde6Q6Obj;
+import com.yxuo.repository.TDE6.structs.Tde6Q5Obj;
+import com.yxuo.repository.TDE6.structs.Tde6Q6Obj;
 import com.yxuo.util.DBConnector;
 import com.yxuo.util.Query;
 
@@ -73,7 +73,7 @@ public class TDE6Repository extends BaseRepository {
                 + "LEFT JOIN " + turma.getTableName() + " t \n"
                 + "ON m." + matriculado.getTurmaColumn() + " = t." + turma.getIdColumn() + "\n"
                 + "WHERE " + turma.getIdColumn() + " IS NOT NULL";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -145,7 +145,7 @@ public class TDE6Repository extends BaseRepository {
                 + "ON t." + turma.getProfessorColumn() + " = p." + professor.getIdColumn() + "\n"
                 + "LEFT JOIN " + disciplina.getTableName() + " d \n"
                 + "ON t." + turma.getDisciplinaColumn() + " = d." + disciplina.getIdColumn();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -198,7 +198,7 @@ public class TDE6Repository extends BaseRepository {
                 + "LEFT JOIN " + matriculado.getTableName() + " m \n"
                 + "ON a." + aluno.getIdColumn() + " = m." + matriculado.getAlunoColumn() + "\n"
                 + "WHERE m." + matriculado.getAlunoColumn() + " IS NULL";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -261,7 +261,7 @@ public class TDE6Repository extends BaseRepository {
             + "LEFT JOIN " + realiza.getTableName() + " r ON " + realiza.getProvaColumn() + " = " + prova.getIdColumn() + "\n"
             + Query.groupBy(turma.getIdColumn(), disciplina.getNomeColumn(), prova.getCodProvaColumn(), prova.getSituacaoColumn())
             ;
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -325,7 +325,7 @@ public class TDE6Repository extends BaseRepository {
             + "LEFT JOIN " + professor.getTableName() + " pr ON " + professor.getIdColumn() + " = " + turma.getProfessorColumn() + "\n"
             + Query.groupBy(turma.getIdColumn(), "d_" + disciplina.getNomeColumn(), prova.getCodProvaColumn(), prova.getSituacaoColumn())
             ;
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -385,7 +385,7 @@ public class TDE6Repository extends BaseRepository {
             + "LEFT JOIN " + turma.getTableName() + " t ON " + professor.getIdColumn() + " = " + turma.getProfessorColumn() + "\n"
             + Query.groupBy(professor.getIdColumn())
             ;
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -431,7 +431,7 @@ public class TDE6Repository extends BaseRepository {
             + "LEFT JOIN " + disciplina.getTableName() + " d ON d." + disciplina.getIdColumn() + " = " + turma.getDisciplinaColumn() + "\n"
             + "WHERE " + disciplina.getIdColumn() + " IS NOT NULL"
             ;
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -477,7 +477,7 @@ public class TDE6Repository extends BaseRepository {
             + "LEFT JOIN " + turma.getTableName() + " t ON " + turma.getDisciplinaColumn() + " = " + disciplina.getIdColumn() + "\n"
             + "WHERE " + turma.getIdColumn() + " IS NULL"
             ;
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -518,7 +518,7 @@ public class TDE6Repository extends BaseRepository {
             + "RIGHT JOIN " + disciplina.getTableName() + " d ON d." + disciplina.getIdColumn() + " = t." + turma.getDisciplinaColumn() + "\n"
             + "WHERE " + prova.getIdColumn() + " IS NULL"
             ;
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

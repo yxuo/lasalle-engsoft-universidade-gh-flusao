@@ -1,14 +1,13 @@
-package com.yxuo.view.cli.enums;
+package com.yxuo.view.cli.gerenciar.enums;
 
-public enum MainCliMenuEnum {
-    TDE_6("1"),
-    GERENCIAR_DADOS("2"),
-    SOBRE("3"),
-    SAIR("z");
+public enum GerenciarCliMenuEnum {
+    PROFESSORES("1"),
+    PROVAS("2"),
+    MENU("z");
 
     private String value;
 
-    MainCliMenuEnum(String value) {
+    GerenciarCliMenuEnum(String value) {
         this.value = value;
     }
 
@@ -16,8 +15,8 @@ public enum MainCliMenuEnum {
         return value;
     }
 
-    public static MainCliMenuEnum getEnum(String value) {
-        for (MainCliMenuEnum enumValue : MainCliMenuEnum.values()) {
+    public static GerenciarCliMenuEnum getEnum(String value) {
+        for (GerenciarCliMenuEnum enumValue : GerenciarCliMenuEnum.values()) {
             if (enumValue.getValue().equals(value)) {
                 return enumValue;
             }
@@ -27,7 +26,7 @@ public enum MainCliMenuEnum {
 
     public static String toString1() {
         String repr = "";
-        for (MainCliMenuEnum enumValue : MainCliMenuEnum.values()) {
+        for (GerenciarCliMenuEnum enumValue : GerenciarCliMenuEnum.values()) {
             String enumName = enumValue.name().replace("_", " ");
             repr += enumValue.getValue() + ". " + enumName + "\n";
         }

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.yxuo.constant.MessageCte;
 import com.yxuo.util.CLI;
 import com.yxuo.view.cli.enums.MainCliMenuEnum;
+import com.yxuo.view.cli.gerenciar.GerenciarCliView;
 
 public class MainCliView {
     private String beforeClear = "";
@@ -59,10 +60,9 @@ public class MainCliView {
                 System.out.println(MessageCte.SOBRE + "\n");
                 System.out.println("-".repeat(20) + "\n");
                 break;
-            case VER_BANCO_DE_DADOS:
-                System.out.println("-".repeat(20) + "\n");
-                System.out.println("Em construção...\n");
-                System.out.println("-".repeat(20) + "\n");
+            case GERENCIAR_DADOS:
+                GerenciarCliView gerenciar = new GerenciarCliView();
+                gerenciar.display();
                 break;
             case SAIR:
                 System.out.println("Saindo...");

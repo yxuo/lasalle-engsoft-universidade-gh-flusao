@@ -58,7 +58,10 @@ public class CLI {
 
         for (int i = 0; i < compare.size(); i++) {
             T item = compare.get(i);
-            Integer length = item.toString().length();
+            Integer length = "null".length();
+            if (item != null) {
+                length = item.toString().length();
+            }
 
             if (length > maxLength.get(i)) {
                 maxLength.set(i, length);
@@ -72,8 +75,13 @@ public class CLI {
         String response = "";
         for (int i = 0; i < items.size(); i++) {
             T item = items.get(i);
-            String itemStr = item.toString();
-            response += itemStr + CLI.getSpaces(maxLength.get(i), itemStr.length()) + TABLE_SPACE;
+            String itemStr = "null";
+            String itemFormatted = CLI.getItalic(CLI.ANSI_BRIGHT_BLACK + itemStr);
+            if (item != null) {
+                itemStr = item.toString();
+                itemFormatted = itemStr;
+            }
+            response += itemFormatted + CLI.getSpaces(maxLength.get(i), itemStr.length()) + TABLE_SPACE;
         }
         response += "\n";
         return response;

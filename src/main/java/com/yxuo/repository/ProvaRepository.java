@@ -42,23 +42,30 @@ public class ProvaRepository extends BaseRepository {
         return entity;
     }
 
-    private ProvaAC construirObjeto(ResultSet resultado) throws SQLException {
+    private ProvaAC construirObjeto(ResultSet resultado, Boolean subItens) throws SQLException {
         int idProva = resultado.getInt(prova.getIdColumn());
         String codProva = resultado.getString(prova.getCodProvaColumn());
         String situacao = resultado.getString(prova.getSituacaoColumn());
-        TurmaAC turma = turmaRepository.buscarPorId(resultado.getInt(prova.getTurmaColumn()));
+        TurmaAC turma = new TurmaAC(resultado.getInt(prova.getTurmaColumn()));
+        if (subItens) {
+            turma = turmaRepository.buscarPorId(resultado.getInt(prova.getTurmaColumn()));
+        }
         return new ProvaAC(idProva, codProva, situacao, turma);
     }
 
     public List<ProvaAC> listarTodos() throws SQLException {
+        return listarTodos(true);
+    }
+
+    public List<ProvaAC> listarTodos(Boolean subItens) throws SQLException {
         List<ProvaAC> provas = new ArrayList<>();
         String query = "SELECT * FROM " + prova.getTableName();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                ProvaAC prova = construirObjeto(resultSet);
+                ProvaAC prova = construirObjeto(resultSet, subItens);
                 provas.add(prova);
             }
         }
@@ -66,10 +73,11 @@ public class ProvaRepository extends BaseRepository {
     }
 
     public void inserir(ProvaAC prova) throws SQLException {
-        String query = "INSERT INTO " + prova.getTableName() + " (" + prova.getIdColumn() + ", " + prova.getCodProvaColumn() + ", "
+        String query = "INSERT INTO " + prova.getTableName() + " (" + prova.getIdColumn() + ", "
+                + prova.getCodProvaColumn() + ", "
                 + prova.getSituacaoColumn()
                 + ", " + prova.getTurmaColumn() + ") VALUES (?, ?, ?, ?)";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, prova.getId());
             statement.setString(2, prova.getCodProva());
@@ -80,9 +88,10 @@ public class ProvaRepository extends BaseRepository {
     }
 
     public void atualizar(ProvaAC prova) throws SQLException {
-        String query = "UPDATE " + prova.getTableName() + " SET " + prova.getCodProvaColumn() + " = ?, " + prova.getSituacaoColumn()
+        String query = "UPDATE " + prova.getTableName() + " SET " + prova.getCodProvaColumn() + " = ?, "
+                + prova.getSituacaoColumn()
                 + " = ?, " + prova.getTurmaColumn() + " = ? WHERE " + prova.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, prova.getCodProva());
             statement.setString(2, prova.getSituacao());
@@ -93,17 +102,42 @@ public class ProvaRepository extends BaseRepository {
     }
 
     public ProvaAC buscarPorId(int id) throws SQLException {
+        return buscarPorId(id, true);
+    }
+
+    public ProvaAC buscarPorId(int id, Boolean subItens) throws SQLException {
         String query = "SELECT * FROM " + prova.getTableName() + " WHERE " + prova.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return construirObjeto(resultSet);
+                    return construirObjeto(resultSet, subItens);
                 }
             }
         }
         return null;
+    }
+
+    public List<ProvaAC> buscarPorCodigo(String codProva) throws SQLException {
+        return buscarPorCodigo(codProva, true);
+    }
+
+    public List<ProvaAC> buscarPorCodigo(String codProva, Boolean subItens) throws SQLException {
+        String query = "SELECT * FROM " + prova.getTableName()
+                + " WHERE " + prova.getCodProvaColumn() + " LIKE ? COLLATE NOCASE";
+        DBConnector.printQuery(query);
+        List<ProvaAC> provas = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, "%" + codProva + "%");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    ProvaAC prova = construirObjeto(resultSet, subItens);
+                    provas.add(prova);
+                }
+            }
+        }
+        return provas;
     }
 
     public void criarTabela() throws SQLException {
@@ -118,7 +152,7 @@ public class ProvaRepository extends BaseRepository {
                 + ") ON DELETE CASCADE"
                 +
                 ")";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.execute();
         }

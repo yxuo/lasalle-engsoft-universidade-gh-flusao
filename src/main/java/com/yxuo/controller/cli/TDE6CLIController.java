@@ -1,4 +1,4 @@
-package com.yxuo.controller.cli.TDE6;
+package com.yxuo.controller.cli;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -15,8 +15,8 @@ import com.yxuo.model.ProvaAC;
 import com.yxuo.model.RealizaProvaAC;
 import com.yxuo.model.TurmaAC;
 import com.yxuo.repository.TDE6.TDE6Repository;
-import com.yxuo.repository.TDE6.transfer.Tde6Q5Obj;
-import com.yxuo.repository.TDE6.transfer.Tde6Q6Obj;
+import com.yxuo.repository.TDE6.structs.Tde6Q5Obj;
+import com.yxuo.repository.TDE6.structs.Tde6Q6Obj;
 import com.yxuo.util.CLI;
 
 public class TDE6CLIController {

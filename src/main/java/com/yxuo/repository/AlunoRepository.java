@@ -48,7 +48,7 @@ public class AlunoRepository extends BaseRepository {
     public List<AlunoAC> listarTodos() throws SQLException {
         List<AlunoAC> alunos = new ArrayList<>();
         String query = "SELECT * FROM " + aluno.getTableName();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
 
@@ -63,7 +63,7 @@ public class AlunoRepository extends BaseRepository {
     public void inserir(AlunoAC aluno) throws SQLException {
         String query = "INSERT INTO " + aluno.getTableName() + " (" + aluno.getIdColumn() + ", "
                 + aluno.getMatColumn() + ", " + aluno.getNomeColumn() + ") VALUES (?, ?, ?)";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, aluno.getId());
             statement.setString(2, aluno.getMat());
@@ -77,7 +77,7 @@ public class AlunoRepository extends BaseRepository {
                 + aluno.getNomeColumn()
                 + " = ? WHERE "
                 + aluno.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, aluno.getMat());
             statement.setString(2, aluno.getNome());
@@ -88,7 +88,7 @@ public class AlunoRepository extends BaseRepository {
 
     public AlunoAC buscarPorId(int id) throws SQLException {
         String query = "SELECT * FROM " + aluno.getTableName() + " WHERE " + aluno.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -106,7 +106,7 @@ public class AlunoRepository extends BaseRepository {
                 aluno.getNomeColumn() + " VARCHAR(255), " +
                 aluno.getMatColumn() + " VARCHAR(255) " +
                 ")";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.execute();
         }

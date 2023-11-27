@@ -56,7 +56,7 @@ public class CursaRepository extends BaseRepository {
     public List<CursaAC> listarTodos() throws SQLException {
         List<CursaAC> cursandos = new ArrayList<>();
         String query = "SELECT * FROM " + cursa.getTableName();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
 
@@ -69,10 +69,11 @@ public class CursaRepository extends BaseRepository {
     }
 
     public void inserir(CursaAC cursa) throws SQLException {
-        String query = "INSERT INTO " + cursa.getTableName() + " (" + cursa.getIdColumn() + ", " + cursa.getAlunoColumn() + ", "
+        String query = "INSERT INTO " + cursa.getTableName() + " (" + cursa.getIdColumn() + ", "
+                + cursa.getAlunoColumn() + ", "
                 + cursa.getTurmaColumn()
                 + ") VALUES (?, ?, ?)";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, cursa.getId());
             statement.setInt(2, cursa.getAluno().getIdAluno());
@@ -82,10 +83,11 @@ public class CursaRepository extends BaseRepository {
     }
 
     public void atualizar(CursaAC cursa) throws SQLException {
-        String query = "UPDATE " + cursa.getTableName() + " SET " + cursa.getAlunoColumn() + " = ?, " + cursa.getTurmaColumn()
+        String query = "UPDATE " + cursa.getTableName() + " SET " + cursa.getAlunoColumn() + " = ?, "
+                + cursa.getTurmaColumn()
                 + " = ? WHERE "
                 + cursa.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, cursa.getAluno().getIdAluno());
             statement.setInt(2, cursa.getTurma().getIdTurma());
@@ -96,7 +98,7 @@ public class CursaRepository extends BaseRepository {
 
     public CursaAC buscarPorId(int id) throws SQLException {
         String query = "SELECT * FROM " + cursa.getTableName() + " WHERE " + cursa.getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -116,13 +118,15 @@ public class CursaRepository extends BaseRepository {
                 cursa.getIdColumn() + " INT AUTO_INCREMENT PRIMARY KEY, " +
                 cursa.getAlunoColumn() + " INT, " +
                 cursa.getTurmaColumn() + " INT, " +
-                "FOREIGN KEY (" + cursa.getAlunoColumn() + ") REFERENCES " + aluno.getTableName() + "(" + aluno.getIdColumn()
+                "FOREIGN KEY (" + cursa.getAlunoColumn() + ") REFERENCES " + aluno.getTableName() + "("
+                + aluno.getIdColumn()
                 + ") ON DELETE CASCADE, " +
-                "FOREIGN KEY (" + cursa.getTurmaColumn() + ") REFERENCES " + turma.getTableName() + "(" + turma.getIdColumn()
+                "FOREIGN KEY (" + cursa.getTurmaColumn() + ") REFERENCES " + turma.getTableName() + "("
+                + turma.getIdColumn()
                 + ") ON DELETE CASCADE"
                 +
                 ")";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.execute();
         }

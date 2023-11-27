@@ -1,4 +1,4 @@
-package com.yxuo.repository.TDE6.transfer;
+package com.yxuo.repository.TDE6.structs;
 
 import com.yxuo.model.RealizaProvaAC;
 

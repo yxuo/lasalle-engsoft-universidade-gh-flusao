@@ -1,11 +1,12 @@
 package com.yxuo.model;
 
 import com.yxuo.constant.TableCte;
+import com.yxuo.model.enums.ProvaStatusEnum;
 
 public class ProvaAC extends BaseEntity {
     private int idProva;
     private String codProva;
-    private String situacao;
+    private String situacao = null;
     private TurmaAC turma;
 
     private static final String TABLE_NAME = "ProvaAC";
@@ -17,14 +18,19 @@ public class ProvaAC extends BaseEntity {
     public ProvaAC() {
         idProva = -1;
         codProva = "";
-        situacao = "";
         turma = new TurmaAC();
+    }
+
+    public ProvaAC(ProvaAC prova) {
+        idProva = prova.getIdProva();
+        codProva = prova.getCodProva();
+        situacao = prova.getSituacao();
+        turma = prova.getTurma();
     }
 
     public ProvaAC(int idProva) {
         this.idProva = idProva;
         this.codProva = "";
-        this.situacao = "";
         this.turma = new TurmaAC();
     }
 
@@ -98,6 +104,10 @@ public class ProvaAC extends BaseEntity {
         this.situacao = situacao;
     }
 
+    public void setSituacao(ProvaStatusEnum situacao) {
+        this.situacao = situacao.getValue();
+    }
+
     public TurmaAC getTurma() {
         return turma;
     }
@@ -106,6 +116,30 @@ public class ProvaAC extends BaseEntity {
         this.turma = turma;
     }
 
+    // Actions
+
+    public void cadastrar() {
+        this.situacao = ProvaStatusEnum.DISPONIVEL.toString();
+    }
+
+    public void aplicar() {
+        this.situacao = ProvaStatusEnum.APLICADA.toString();
+    }
+
+    public void corrigir() {
+        this.situacao = ProvaStatusEnum.CORRIGIDA.toString();
+    }
+
+    public void revisar() {
+        this.situacao = ProvaStatusEnum.REVISADA.toString();
+    }
+
+    public void finalizar() {
+        this.situacao = ProvaStatusEnum.FINALIZADA.toString();
+    }
+
+    // Etc
+
     @Override
     public String toString() {
         return "ProvaAC{" +
@@ -113,6 +147,19 @@ public class ProvaAC extends BaseEntity {
                 ", codProva='" + codProva + '\'' +
                 ", situacao='" + situacao + '\'' +
                 ", turma=" + turma +
-                '}';
+                " }";
+    }
+
+    public String toString(Boolean plain) {
+        if (plain) {
+            return "{ " +
+                    "idProva=" + idProva +
+                    ", codProva='" + codProva + '\'' +
+                    ", situacao='" + situacao + '\'' +
+                    ", turma=" + turma.getId() +
+                    " }";
+        } else {
+            return toString();
+        }
     }
 }

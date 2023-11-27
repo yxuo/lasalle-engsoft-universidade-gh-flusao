@@ -42,7 +42,7 @@ public abstract class BaseRepository {
 
     public void setMaxIdFromDB() throws SQLException {
         String query = "SELECT MAX(" + getEntity().getIdColumn() + ") AS max_id FROM " + getEntity().getTableName();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = getConnection().prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
@@ -62,7 +62,7 @@ public abstract class BaseRepository {
 
     public void apagarID(int id) throws SQLException {
         String query = "DELETE FROM " + getEntity().getTableName() + " WHERE " + getEntity().getIdColumn() + " = ?";
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = getConnection().prepareStatement(query)) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -71,7 +71,7 @@ public abstract class BaseRepository {
 
     public void apagarTabela() throws SQLException {
         String query = "DROP TABLE IF EXISTS " + getEntity().getTableName();
-        DBConnector.parseQuery(query);
+        DBConnector.printQuery(query);
         try (PreparedStatement statement = getConnection().prepareStatement(query)) {
             statement.execute();
         }

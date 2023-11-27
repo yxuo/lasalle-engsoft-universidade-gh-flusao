@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import com.yxuo.constant.MessageCte;
-import com.yxuo.controller.cli.TDE6.TDE6CLIController;
+import com.yxuo.controller.cli.TDE6CLIController;
 import com.yxuo.util.CLI;
 import com.yxuo.view.cli.enums.TDE6CliMenuEnum;
 

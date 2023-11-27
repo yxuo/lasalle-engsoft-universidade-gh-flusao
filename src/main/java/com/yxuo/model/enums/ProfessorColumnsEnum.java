@@ -1,14 +1,14 @@
-package com.yxuo.view.cli.enums;
+package com.yxuo.model.enums;
 
-public enum MainCliMenuEnum {
-    TDE_6("1"),
-    GERENCIAR_DADOS("2"),
-    SOBRE("3"),
-    SAIR("z");
+public enum ProfessorColumnsEnum {
+    ID_PROF("ID_PROF"),
+    MAT_PROF("MAT_PROF"),
+    NOME("NOME"),
+    SITUACAO("SITUACAO");
 
     private String value;
 
-    MainCliMenuEnum(String value) {
+    ProfessorColumnsEnum(String value) {
         this.value = value;
     }
 
@@ -16,8 +16,8 @@ public enum MainCliMenuEnum {
         return value;
     }
 
-    public static MainCliMenuEnum getEnum(String value) {
-        for (MainCliMenuEnum enumValue : MainCliMenuEnum.values()) {
+    public static ProfessorStatusEnum getEnum(String value) {
+        for (ProfessorStatusEnum enumValue : ProfessorStatusEnum.values()) {
             if (enumValue.getValue().equals(value)) {
                 return enumValue;
             }
@@ -27,11 +27,10 @@ public enum MainCliMenuEnum {
 
     public static String toString1() {
         String repr = "";
-        for (MainCliMenuEnum enumValue : MainCliMenuEnum.values()) {
+        for (ProfessorStatusEnum enumValue : ProfessorStatusEnum.values()) {
             String enumName = enumValue.name().replace("_", " ");
             repr += enumValue.getValue() + ". " + enumName + "\n";
         }
         return repr;
     }
-
 }
